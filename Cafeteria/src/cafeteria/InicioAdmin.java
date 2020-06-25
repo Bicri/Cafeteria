@@ -23,9 +23,14 @@ public class InicioAdmin extends javax.swing.JFrame {
     
     public InicioAdmin() {
         initComponents();
-        setSize(1100,600);
+        setSize(1200,600);
         setLocationRelativeTo(null);
         estilos();
+        
+        initAd.setVisible(true);
+        
+        centro.add(initAd);
+        centro.validate();
     }
     
     public void estilos()
@@ -185,9 +190,8 @@ public class InicioAdmin extends javax.swing.JFrame {
                 .addComponent(lblPersonal)
                 .addGap(41, 41, 41)
                 .addComponent(lblCerrar)
-                .addGap(93, 93, 93)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(232, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 298, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         cabeceraLayout.setVerticalGroup(
             cabeceraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
