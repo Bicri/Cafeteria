@@ -75,6 +75,4 @@ public class Orden {
         return "Orden{" + "idOrden=" + idOrden + ", cliente=" + cliente + ", platillos=" + platillos + ", fecha=" + fecha + ", estado=" + estado + ", total=" + total + '}';
     }
     
-    
-    
 }

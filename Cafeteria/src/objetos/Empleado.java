@@ -5,19 +5,24 @@ package objetos;
  *
  * @author isaac
  */
-public class Empleados extends Persona{
+public class Empleado extends Persona{
     
     private String numeroEmpleado;
     private int telefono;
     private String correo, cargo, contraseña;
 
-    public Empleados()
+    public Empleado()
     {
         super();
     }
-    
-    public Empleados(String nombre, String primerApellido, String segundoApellido, String sexo) {
+
+    public Empleado(String numeroEmpleado, int telefono, String correo, String cargo, String contraseña, String nombre, String primerApellido, String segundoApellido, String sexo) {
         super(nombre, primerApellido, segundoApellido, sexo);
+        this.numeroEmpleado = numeroEmpleado;
+        this.telefono = telefono;
+        this.correo = correo;
+        this.cargo = cargo;
+        this.contraseña = contraseña;
     }
 
     public String getNumeroEmpleado() {
@@ -94,7 +99,7 @@ public class Empleados extends Persona{
 
     @Override
     public String toString() {
-        return super.toString() + "Empleados{" + "numeroEmpleado=" + numeroEmpleado + ", telefono=" + telefono + ", correo=" + correo + ", cargo=" + cargo + ", contrase\u00f1a=" + contraseña + '}';
+        return super.toString() + "Empleado{" + "numeroEmpleado=" + numeroEmpleado + ", telefono=" + telefono + ", correo=" + correo + ", cargo=" + cargo + ", contrase\u00f1a=" + contraseña + '}';
     }
     
 }

@@ -1,6 +1,5 @@
 
 package cafeteria;
-
 /**
  *
  * @author isaac
