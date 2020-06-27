@@ -2,6 +2,9 @@
 package cafeteria;
 
 import java.awt.Color;
+import java.awt.Window;
+import javax.swing.SwingUtilities;
+import objetos.Empleado;
 import tipografia.Fuentes;
 /**
  *
@@ -12,10 +15,15 @@ public class Inicio extends javax.swing.JPanel {
     /**
      * Creates new form Inicio
      */
-    Fuentes fonts = new Fuentes();
-    public Inicio() {
+    private Fuentes fonts = new Fuentes();
+    private DatosPersonales objeto;
+    private AdminEmpleados adminE;
+    private String empleado;
+    
+    public Inicio(String emp) {
         initComponents();
         tipografias();
+        empleado = emp;
     }
     
     public void tipografias()
@@ -174,9 +182,14 @@ public class Inicio extends javax.swing.JPanel {
     }//GEN-LAST:event_panelUserMouseExited
 
     private void panelUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelUserMouseClicked
+        Window parentWindow = SwingUtilities.windowForComponent(this);
+        adminE = new AdminEmpleados(empleado);
+        adminE.setVisible(true);
+        parentWindow.dispose();
 
     }//GEN-LAST:event_panelUserMouseClicked
 
+        
     private void panelMenuMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuMouseEntered
         // TODO add your handling code here:
         lblMenu.setForeground(new Color(51,51,51));

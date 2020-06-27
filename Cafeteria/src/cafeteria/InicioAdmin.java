@@ -5,7 +5,11 @@
  */
 package cafeteria;
 
+import BaseDatos.Mysql;
+import Sesion.Login;
 import java.awt.Color;
+import javax.swing.ImageIcon;
+import objetos.Empleado;
 import tipografia.Fuentes;
 
 /**
@@ -15,22 +19,40 @@ import tipografia.Fuentes;
 
 public class InicioAdmin extends javax.swing.JFrame {
 
-    /**
+    /** 
      * Creates new form InicioAdmin
      */
-    private Inicio initAd = new Inicio();
-    private Fuentes fuente;
     
-    public InicioAdmin() {
+    private Fuentes fuente;
+    private Inicio initAd;
+    private DatosPersonales personal;
+    private String empleado;
+    private Login login = new Login();
+    private Mysql mysql = new Mysql();
+    
+    public InicioAdmin(String emp) {
         initComponents();
         setSize(1200,600);
         setLocationRelativeTo(null);
+        
+        setIconImage(new ImageIcon(getClass().getResource("../imagenes/LogoSolo.png")).getImage());
+        
+
+        empleado = emp;
         estilos();
         
+        initAd = new Inicio(empleado);
         initAd.setVisible(true);
+        personal = new DatosPersonales(empleado);
+        personal.setVisible(false);
         
         centro.add(initAd);
         centro.validate();
+        
+    }
+
+    private InicioAdmin() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     public void estilos()
@@ -38,11 +60,11 @@ public class InicioAdmin extends javax.swing.JFrame {
         lblInicio.setLocation(100, 200);
         fuente = new Fuentes();
         lblTitulo.setFont(fuente.fuente(fuente.monserratSemiBold, 0, 65));
-        lblUsuario.setFont(fuente.fuente(fuente.pragatiNarrowRegular, 0, 18));
         lblInicio.setFont(fuente.fuente(fuente.monserratRegular, 0, 24));
         lblPersonal.setFont(fuente.fuente(fuente.monserratRegular, 0, 24));
         lblCerrar.setFont(fuente.fuente(fuente.monserratRegular, 0, 24));
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,7 +83,6 @@ public class InicioAdmin extends javax.swing.JFrame {
         centro = new javax.swing.JPanel();
         cabecera = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
-        lblUsuario = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         lblInicio = new javax.swing.JLabel();
         lblPersonal = new javax.swing.JLabel();
@@ -139,14 +160,11 @@ public class InicioAdmin extends javax.swing.JFrame {
         lblTitulo.setForeground(new java.awt.Color(181, 8, 37));
         lblTitulo.setText("INICIO");
 
-        lblUsuario.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblUsuario.setText("Nombre de usuario mas su id");
-
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/LogoSolo1.png"))); // NOI18N
 
         lblInicio.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         lblInicio.setForeground(new java.awt.Color(131, 8, 37));
-        lblInicio.setText("Inicio");
+        lblInicio.setText("Home");
         lblInicio.setToolTipText("");
         lblInicio.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblInicio.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -181,33 +199,27 @@ public class InicioAdmin extends javax.swing.JFrame {
             cabeceraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(cabeceraLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(cabeceraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblUsuario)
-                    .addComponent(lblTitulo))
-                .addGap(70, 70, 70)
+                .addComponent(lblTitulo)
+                .addGap(102, 102, 102)
                 .addComponent(lblInicio)
                 .addGap(40, 40, 40)
                 .addComponent(lblPersonal)
                 .addGap(41, 41, 41)
                 .addComponent(lblCerrar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 298, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 292, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         cabeceraLayout.setVerticalGroup(
             cabeceraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
-            .addGroup(cabeceraLayout.createSequentialGroup()
-                .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblUsuario)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cabeceraLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(cabeceraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblInicio)
                     .addComponent(lblPersonal)
-                    .addComponent(lblCerrar))
-                .addGap(25, 25, 25))
+                    .addComponent(lblCerrar)
+                    .addComponent(lblTitulo))
+                .addGap(16, 16, 16))
         );
 
         centro.add(cabecera, java.awt.BorderLayout.PAGE_START);
@@ -224,7 +236,9 @@ public class InicioAdmin extends javax.swing.JFrame {
         lblPersonal.setForeground(new Color(137,137,137));
         
         //Agregar componente
+        initAd = new Inicio(empleado);
         initAd.setVisible(true);
+        personal.setVisible(false);
         
         centro.add(initAd);
         centro.validate();
@@ -236,6 +250,12 @@ public class InicioAdmin extends javax.swing.JFrame {
         lblInicio.setForeground(new Color(137,137,137));
         lblCerrar.setForeground(new Color(137,137,137));
         lblPersonal.setForeground(new Color(131,8,37));
+        
+        initAd.setVisible(false);
+        personal = new DatosPersonales(empleado);
+        personal.setVisible(true);
+        centro.add(personal);
+        centro.validate();
     }//GEN-LAST:event_lblPersonalMouseClicked
 
     private void lblCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarMouseClicked
@@ -243,6 +263,9 @@ public class InicioAdmin extends javax.swing.JFrame {
         lblInicio.setForeground(new Color(137,137,137));
         lblCerrar.setForeground(new Color(137,137,137));
         lblPersonal.setForeground(new Color(137,137,137));
+        
+        login.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_lblCerrarMouseClicked
 
     /**
@@ -291,7 +314,6 @@ public class InicioAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel lblInicio;
     private javax.swing.JLabel lblPersonal;
     private javax.swing.JLabel lblTitulo;
-    private javax.swing.JLabel lblUsuario;
     private javax.swing.JPanel norte;
     private javax.swing.JPanel sur;
     // End of variables declaration//GEN-END:variables

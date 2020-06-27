@@ -37,3 +37,8 @@ create table ordenes
     Fecha	varchar(10),
     Estado	varchar(15)
 );
+
+
+-- Ingreso manual de datos ------------------------------------------------------------------------------------------
+
+INSERT INTO empleados (NumeroEmpleado, Nombre, Cargo, Contraseña)Values("A0","root","Administrador","r3c0p3r1");

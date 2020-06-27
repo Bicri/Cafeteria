@@ -5,7 +5,11 @@
  */
 package Sesion;
 
+import BaseDatos.Mysql;
+import cafeteria.InicioAdmin;
 import java.awt.Color;
+import javax.swing.ImageIcon;
+import objetos.Empleado;
 import tipografia.Fuentes;
 
 /**
@@ -17,11 +21,17 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-    
+
+    private Mysql mysql = new Mysql();
+    private Empleado empleado = new Empleado();
     private Fuentes fuente = new Fuentes();
+    
+    private InicioAdmin admin;
+    
     public Login() {
         initComponents();
         setLocationRelativeTo(null);
+        setIconImage(new ImageIcon(getClass().getResource("../imagenes/LogoSolo.png")).getImage());
         estilos();
     }
     
@@ -30,8 +40,11 @@ public class Login extends javax.swing.JFrame {
         lblTitle.setFont(fuente.fuente(fuente.monserratSemiBold, 1, 45));
         lblTitle.setForeground(new Color(181,8,37));
         lblTitle.requestFocus();
+        
+        lblError.setVisible(false);
        
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -55,8 +68,10 @@ public class Login extends javax.swing.JFrame {
         txtPass = new rscomponentshade.RSPassFieldShade();
         btnLogin = new javax.swing.JButton();
         lblLinker = new javax.swing.JLabel();
+        lblError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         panelImagen.setBackground(new java.awt.Color(255, 255, 255));
         panelImagen.setPreferredSize(new java.awt.Dimension(500, 600));
@@ -179,6 +194,10 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        lblError.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblError.setForeground(new java.awt.Color(131, 8, 37));
+        lblError.setText("Error en las credenciales de acceso");
+
         javax.swing.GroupLayout centroLayout = new javax.swing.GroupLayout(centro);
         centro.setLayout(centroLayout);
         centroLayout.setHorizontalGroup(
@@ -204,7 +223,10 @@ public class Login extends javax.swing.JFrame {
                             .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(centroLayout.createSequentialGroup()
                         .addGap(41, 41, 41)
-                        .addComponent(lblLinker)))
+                        .addComponent(lblLinker))
+                    .addGroup(centroLayout.createSequentialGroup()
+                        .addGap(56, 56, 56)
+                        .addComponent(lblError)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         centroLayout.setVerticalGroup(
@@ -221,7 +243,9 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblLinker)
-                .addGap(0, 76, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addComponent(lblError)
+                .addContainerGap())
         );
 
         panelLogin.add(centro, java.awt.BorderLayout.CENTER);
@@ -232,7 +256,22 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        // TODO add your handling code here:
+        if(mysql.iniciar_sesion(txtUser.getText(), txtPass.getText())== true)
+        {
+            empleado = mysql.get1empelado(txtUser.getText());
+            mysql.desconectar();
+            if(empleado.getCargo().equals("Administrador"))
+            {   
+                admin = new InicioAdmin(empleado.getNumeroEmpleado());
+                admin.setVisible(true);
+                this.dispose();
+            }
+        }
+        else
+        {
+            lblError.setVisible(true);
+        }
+        mysql.desconectar();
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnLoginMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseEntered
@@ -295,6 +334,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel centro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel lado;
+    private javax.swing.JLabel lblError;
     private javax.swing.JLabel lblLinker;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblTitle;
