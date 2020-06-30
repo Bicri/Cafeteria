@@ -6,7 +6,10 @@
 package cafeteria;
 
 import BaseDatos.Mysql;
+import Emergentes.DosBotones;
+import Emergentes.EditaEmpleados;
 import Emergentes.Inserta;
+import Emergentes.UnBoton;
 import Sesion.Login;
 import java.awt.Color;
 import java.awt.Frame;
@@ -36,7 +39,10 @@ public class AdminEmpleados extends javax.swing.JFrame {
     private Mysql mysql = new Mysql();
     private Empleado empleado = new Empleado();
     private List <Empleado> listaEmpleado = new ArrayList<>();
-    private String EmpleadoString;
+    private String EmpleadoString, idSelect="";
+    private EditaEmpleados editaEmp;
+    private UnBoton unboton;
+    private DosBotones dosBotones;
     
     private InicioAdmin regresa;
     
@@ -267,12 +273,22 @@ public class AdminEmpleados extends javax.swing.JFrame {
         tblEmp.setMultipleSeleccion(false);
         tblEmp.setShowHorizontalLines(false);
         tblEmp.setShowVerticalLines(false);
+        tblEmp.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tblEmpMousePressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblEmp);
 
         btnElimina.setBackground(new java.awt.Color(181, 8, 37));
         btnElimina.setForeground(new java.awt.Color(255, 255, 255));
         btnElimina.setText("Eliminar Empleado");
         btnElimina.setPreferredSize(new java.awt.Dimension(115, 40));
+        btnElimina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminaActionPerformed(evt);
+            }
+        });
 
         btnInserta.setBackground(new java.awt.Color(181, 8, 37));
         btnInserta.setForeground(new java.awt.Color(255, 255, 255));
@@ -297,6 +313,9 @@ public class AdminEmpleados extends javax.swing.JFrame {
         txtsearch.setBgShadeHover(new java.awt.Color(191, 141, 0));
         txtsearch.setPlaceholder("Buscar Empleado");
         txtsearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtsearchKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtsearchKeyTyped(evt);
             }
@@ -353,7 +372,7 @@ public class AdminEmpleados extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtsearchKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtsearchKeyTyped
-        tablaLlenaDinamic();
+        
     }//GEN-LAST:event_txtsearchKeyTyped
 
     private void btnInsertaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertaActionPerformed
@@ -366,6 +385,12 @@ public class AdminEmpleados extends javax.swing.JFrame {
         }
         insertar = new Inserta(parentframe,true);
         insertar.setVisible(true);
+        if(insertar.respuesta2())
+        {
+            tablaLlena(EmpleadoString);
+            idSelect = "";
+        }
+        txtsearch.setText("");
     }//GEN-LAST:event_btnInsertaActionPerformed
 
     private void btnRetrocederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetrocederActionPerformed
@@ -374,6 +399,60 @@ public class AdminEmpleados extends javax.swing.JFrame {
         regresa.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnRetrocederActionPerformed
+
+    private void tblEmpMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEmpMousePressed
+        // TODO add your handling code here:
+        idSelect = tblEmp.getValueAt(tblEmp.getSelectedRow(), 0).toString();
+        empleado = listaEmpleado.get(tblEmp.getSelectedRow());
+        if(evt.getClickCount()==2)
+        {
+            Window parentWindow = SwingUtilities.windowForComponent(this);
+            Frame parentframe = null;
+            if(parentWindow instanceof Frame)
+            {
+                parentframe = (Frame)parentWindow;
+            }
+            editaEmp = new EditaEmpleados(parentframe, true, empleado);
+            editaEmp.setVisible(true);
+            if(editaEmp.respuesta2())
+            {
+                tablaLlena(EmpleadoString);
+                idSelect = "";
+            }
+            txtsearch.setText("");
+        }
+    }//GEN-LAST:event_tblEmpMousePressed
+
+    private void btnEliminaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminaActionPerformed
+        // TODO add your handling code here:
+        Window parentWindow = SwingUtilities.windowForComponent(this);
+        Frame parentframe = null;
+        if(parentWindow instanceof Frame)
+        {
+            parentframe = (Frame)parentWindow;
+        }
+        if(idSelect.equals(""))
+        {
+            unboton = new UnBoton(parentframe, true, 3);
+            unboton.setVisible(true);
+        }
+        else
+        {
+            dosBotones = new DosBotones(parentframe, true, 0, empleado);
+            dosBotones.setVisible(true);
+            if(dosBotones.exito())
+            {
+                tablaLlena(EmpleadoString);
+                idSelect = "";
+            }
+        }
+        txtsearch.setText("");
+    }//GEN-LAST:event_btnEliminaActionPerformed
+
+    private void txtsearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtsearchKeyReleased
+        // TODO add your handling code here:
+        tablaLlenaDinamic();
+    }//GEN-LAST:event_txtsearchKeyReleased
 
     /**
      * @param args the command line arguments

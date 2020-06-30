@@ -220,7 +220,7 @@ public class DatosPersonales extends javax.swing.JPanel {
             }
         });
 
-        btnGuardar.setBackground(new java.awt.Color(131, 8, 37));
+        btnGuardar.setBackground(new java.awt.Color(181, 8, 37));
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar.setText("Guardar Cambios");
         btnGuardar.addMouseListener(new java.awt.event.MouseAdapter() {

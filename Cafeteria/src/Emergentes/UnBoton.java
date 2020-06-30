@@ -5,6 +5,7 @@
  */
 package Emergentes;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import tipografia.Fuentes;
 
@@ -18,12 +19,14 @@ public class UnBoton extends javax.swing.JDialog {
         0 = Datos editados correctamente
         1 = datos vacios
         2 = error de contraseña
+        3 = Error al tratar de eliminar
     */
     
     Fuentes tipograf = new Fuentes();
     public UnBoton(java.awt.Frame parent, boolean modal, int flag) {
         super(parent, modal);
         initComponents();
+        setIconImage(new ImageIcon(getClass().getResource("../imagenes/LogoSolo.png")).getImage());
         setLocationRelativeTo(null);
         estilos();
         validacion(flag);
@@ -45,6 +48,11 @@ public class UnBoton extends javax.swing.JDialog {
         {
             lbltitulo.setText("Error de Contraseña");
             lblMensaje.setText("Formato incorrecto de cambio de contraseña");
+        }
+        else if(flag == 3)
+        {
+            lbltitulo.setText("Error al eliminar");
+            lblMensaje.setText("Selecciona un empleado para eliminarlo");
         }
     }
 
@@ -79,6 +87,7 @@ public class UnBoton extends javax.swing.JDialog {
         lblMensaje = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new java.awt.BorderLayout());

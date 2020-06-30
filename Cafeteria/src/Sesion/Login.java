@@ -8,7 +8,10 @@ package Sesion;
 import BaseDatos.Mysql;
 import cafeteria.InicioAdmin;
 import java.awt.Color;
+import java.awt.Frame;
+import java.awt.Window;
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 import objetos.Empleado;
 import tipografia.Fuentes;
 
@@ -25,6 +28,7 @@ public class Login extends javax.swing.JFrame {
     private Mysql mysql = new Mysql();
     private Empleado empleado = new Empleado();
     private Fuentes fuente = new Fuentes();
+    private Recuperar recuperar;
     
     private InicioAdmin admin;
     
@@ -186,6 +190,9 @@ public class Login extends javax.swing.JFrame {
         lblLinker.setText("Recuperar contraseña");
         lblLinker.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblLinker.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblLinkerMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 lblLinkerMouseEntered(evt);
             }
@@ -293,6 +300,20 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
         lblLinker.setForeground(new Color(181,8,37));
     }//GEN-LAST:event_lblLinkerMouseEntered
+
+    private void lblLinkerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLinkerMouseClicked
+        // TODO add your handling code here:
+        txtPass.setText("");
+        txtUser.setText("");
+        Window parentWindow = SwingUtilities.windowForComponent(this);
+        Frame parentframe = null;
+        if(parentWindow instanceof Frame)
+        {
+            parentframe = (Frame)parentWindow;
+        }
+        recuperar = new Recuperar(parentframe, true);
+        recuperar.setVisible(true);
+    }//GEN-LAST:event_lblLinkerMouseClicked
 
     /**
      * @param args the command line arguments
