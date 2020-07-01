@@ -9,6 +9,7 @@ import BaseDatos.Mysql;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import objetos.Empleado;
+import objetos.Platillo;
 import tipografia.Fuentes;
 
 /**
@@ -19,10 +20,12 @@ public class DosBotones extends javax.swing.JDialog {
 
     /*
         0 = Eliminar empleado
+        1 = elimina plato
     */
     
     private Fuentes tipograf = new Fuentes();
     private Empleado emp = new Empleado();
+    private Platillo plato = new Platillo();
     private Mysql mysql = new Mysql();
     private int flag2;
     
@@ -44,6 +47,12 @@ public class DosBotones extends javax.swing.JDialog {
             emp = (Empleado) o;
             lbltitulo.setText("Eliminar empleado");
             lblMensaje.setText("<html> <body>¿Deseas eliminar al empleado "+emp.getNumeroEmpleado()+" <br> "+emp.getNombre()+" "+emp.getPrimerApellido()+" "+emp.getSegundoApellido()+" ?</body> </html>");
+        }
+        else if(flag2 == 1)
+        {
+            plato = (Platillo) o;
+            lbltitulo.setText("Eliminar platillo");
+            lblMensaje.setText("<html> <body>¿Deseas eliminar el platillo "+plato.getIdPlatillo()+" <br> "+plato.getNombrePlatillo()+"?</body> </html>");
         }
     }
 
@@ -163,6 +172,10 @@ public class DosBotones extends javax.swing.JDialog {
         if(flag2 == 0)
         {
             mysql.eliminaEmpleados(emp.getNumeroEmpleado());
+        }
+        else if(flag2 == 1)
+        {
+            mysql.eliminaPlato(plato.getIdPlatillo());
         }
         mysql.desconectar();
         dispose();

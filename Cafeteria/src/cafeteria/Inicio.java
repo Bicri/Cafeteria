@@ -18,6 +18,8 @@ public class Inicio extends javax.swing.JPanel {
     private Fuentes fonts = new Fuentes();
     private DatosPersonales objeto;
     private AdminEmpleados adminE;
+    private Ventas ventas;
+    private AdminMenu menu;
     private String empleado;
     
     public Inicio(String emp) {
@@ -92,6 +94,9 @@ public class Inicio extends javax.swing.JPanel {
 
         panelMenu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         panelMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelMenuMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 panelMenuMouseEntered(evt);
             }
@@ -122,6 +127,9 @@ public class Inicio extends javax.swing.JPanel {
 
         panelVentas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         panelVentas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelVentasMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 panelVentasMouseEntered(evt);
             }
@@ -209,6 +217,21 @@ public class Inicio extends javax.swing.JPanel {
         // TODO add your handling code here:
         lblVentas.setForeground(Color.WHITE);
     }//GEN-LAST:event_panelVentasMouseExited
+
+    private void panelMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuMouseClicked
+        // TODO add your handling code here:
+        Window parentWindow = SwingUtilities.windowForComponent(this);
+        menu = new AdminMenu(empleado);
+        menu.setVisible(true);
+        parentWindow.dispose();
+    }//GEN-LAST:event_panelMenuMouseClicked
+
+    private void panelVentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelVentasMouseClicked
+        Window parentWindow = SwingUtilities.windowForComponent(this);
+        ventas = new Ventas(empleado);
+        ventas.setVisible(true);
+        parentWindow.dispose();
+    }//GEN-LAST:event_panelVentasMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

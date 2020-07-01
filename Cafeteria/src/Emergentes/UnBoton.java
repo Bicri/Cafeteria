@@ -20,6 +20,7 @@ public class UnBoton extends javax.swing.JDialog {
         1 = datos vacios
         2 = error de contraseña
         3 = Error al tratar de eliminar
+        4 = error al tratar de eliminar plato
     */
     
     Fuentes tipograf = new Fuentes();
@@ -53,6 +54,11 @@ public class UnBoton extends javax.swing.JDialog {
         {
             lbltitulo.setText("Error al eliminar");
             lblMensaje.setText("Selecciona un empleado para eliminarlo");
+        }
+        else if(flag == 4)
+        {
+            lbltitulo.setText("Error al eliminar");
+            lblMensaje.setText("Selecciona un platillo para eliminarlo");
         }
     }
 

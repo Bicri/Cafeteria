@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import objetos.Empleado;
+import objetos.Platillo;
 
 /**
  *
@@ -28,6 +29,8 @@ public class Mysql {
     private ResultSet result = null;
     
     private Empleado empleado = new Empleado();
+    private Platillo platillo = new Platillo();
+    private List <Platillo> listaplatilos = new ArrayList<>();
     private List <Empleado> listaEmpleado = new ArrayList<>();
     
     
@@ -138,6 +141,40 @@ public class Mysql {
             return listaEmpleado;
         }
         
+        public List muestraPlatillos()
+        {
+            listaplatilos.clear();
+            try{
+                st = con.prepareStatement("select * from menu");
+                result = st.executeQuery();
+                while(result.next())
+                {
+                    listaplatilos.add(new Platillo(result.getString(1), result.getString(2), result.getFloat(3)));
+                }
+            }catch(SQLException e)
+            {
+                System.out.println("Error al mostrar" + e);
+            }
+            return listaplatilos;
+        }
+        
+        public List muestraPlatillosDinamic(String buscar)
+        {
+            listaplatilos.clear();
+            try{
+                st = con.prepareStatement("select * from menu where Idplatillo LIKE '"+buscar+"%' UNION select * from menu where NombrePlatillo LIKE '"+buscar+"%' ");
+                result = st.executeQuery();
+                while(result.next())
+                {
+                    listaplatilos.add(new Platillo(result.getString(1), result.getString(2), result.getFloat(3)));
+                }
+            }catch(SQLException e)
+            {
+                System.out.println("Error al mostrar" + e);
+            }
+            return listaplatilos;
+        }
+        
         public List muestraDinamica(String actual, String buscar)
         {
             listaEmpleado.clear();
@@ -182,6 +219,44 @@ public class Mysql {
             return empleado;
         }
         
+        public int countPlatos()
+        {
+            int i = 0;
+            try{
+                st = con.prepareStatement("SELECT * FROM menu ");
+                result = st.executeQuery();
+                while(result.next())
+                {
+                    i++;
+                }
+                
+            }catch(SQLException e)
+            {
+                System.out.println("Error al mostrar" + e);
+            }
+            return i;
+        }
+        
+        public Platillo lastPlato()
+        {
+            
+            try{
+                st = con.prepareStatement("SELECT * FROM menu  ORDER BY Idplatillo DESC LIMIT 1");
+                result = st.executeQuery();
+                while(result.next())
+                {
+                    platillo.setIdPlatillo(result.getString(1));
+                    platillo.setNombrePlatillo(result.getString(2));
+                    platillo.setPrecio(result.getFloat(3));
+                }
+                
+            }catch(SQLException e)
+            {
+                System.out.println("Error al mostrar" + e);
+            }
+            return platillo;
+        }
+        
         public boolean lastEmp2(String inicial)
         {
             
@@ -220,6 +295,24 @@ public class Mysql {
             return false;
         }
         
+        public boolean insertaPlatillo(Platillo plato)
+        {
+            try
+            {
+                st = con.prepareStatement("INSERT INTO menu VALUES (?,?,?)");
+                st.setString(1, plato.getIdPlatillo());
+                st.setString(2, plato.getNombrePlatillo());
+                st.setFloat(3, plato.getPrecio());
+                return st.execute();
+            }catch(SQLException e)
+            {
+                
+                System.out.println("Error al insertar\n "+ e);
+            }
+            
+            return false;
+        }
+        
         public boolean actualizaEmpleado(Empleado emp)
         {
             try
@@ -234,6 +327,21 @@ public class Mysql {
             return false;
         }
         
+        public boolean actualizaPlato(Platillo p)
+        {
+            try
+            {
+                st = con.prepareStatement("UPDATE menu SET Idplatillo = '"+p.getIdPlatillo()+"', NombrePlatillo = '"+p.getNombrePlatillo()+"', Precio = '"+p.getPrecio()+"' WHERE Idplatillo='"+p.getIdPlatillo()+"'");
+                st.executeUpdate();
+                return true;
+            }catch(SQLException e)
+            {
+                System.out.println("Error "+e);
+            }
+            return false;
+        }
+        
+        
         public boolean eliminaEmpleados(String id)
         {
             try
@@ -246,6 +354,38 @@ public class Mysql {
                 System.out.println("ERROR AL ELIMINAR\n "+ e);
             }
             return false;   
+        }
+        
+        public boolean eliminaPlato(String id)
+        {
+            try
+            {
+                st = con.prepareStatement("DELETE FROM menu WHERE Idplatillo = '"+id+"'");
+                st.executeUpdate();
+                return true;
+            }catch(SQLException e)
+            {
+                System.out.println("ERROR AL ELIMINAR\n "+ e);
+            }
+            return false;   
+        }
+        
+        
+        public float ventas()
+        {
+            float cantidad = 0;
+            try{
+                st = con.prepareStatement("SELECT * FROM ordenes where Estado = 'Entregada'");
+                result = st.executeQuery();
+                while(result.next())
+                {
+                    cantidad += result.getFloat(4);
+                }
+            }catch(SQLException e)
+            {
+                System.out.println("Error al mostrar" + e);
+            }
+            return cantidad;
         }
         
     
