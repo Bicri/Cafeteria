@@ -7,6 +7,7 @@ package Sesion;
 
 import BaseDatos.Mysql;
 import cafeteria.InicioAdmin;
+import cafeteria.InicioCajero;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Window;
@@ -29,6 +30,7 @@ public class Login extends javax.swing.JFrame {
     private Empleado empleado = new Empleado();
     private Fuentes fuente = new Fuentes();
     private Recuperar recuperar;
+    private InicioCajero cajero;
     
     private InicioAdmin admin;
     
@@ -271,6 +273,12 @@ public class Login extends javax.swing.JFrame {
             {   
                 admin = new InicioAdmin(empleado.getNumeroEmpleado());
                 admin.setVisible(true);
+                this.dispose();
+            }
+            else if(empleado.getCargo().equals("Cajero"))
+            {
+                cajero = new InicioCajero(empleado.getNumeroEmpleado());
+                cajero.setVisible(true);
                 this.dispose();
             }
         }

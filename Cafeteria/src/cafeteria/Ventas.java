@@ -230,6 +230,11 @@ public class Ventas extends javax.swing.JFrame {
         btnFinaliza.setForeground(new java.awt.Color(255, 255, 255));
         btnFinaliza.setText("Finalizar día");
         btnFinaliza.setPreferredSize(new java.awt.Dimension(130, 40));
+        btnFinaliza.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFinalizaActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnFinaliza);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -273,6 +278,23 @@ public class Ventas extends javax.swing.JFrame {
         // TODO add your handling code here:
         totales();
     }//GEN-LAST:event_btnActualizaActionPerformed
+
+    private void btnFinalizaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizaActionPerformed
+        // TODO add your handling code here:
+        Object o = null;
+        Window parentWindow = SwingUtilities.windowForComponent(this);
+        Frame parentframe = null;
+        if(parentWindow instanceof Frame)
+        {
+            parentframe = (Frame)parentWindow;
+        }
+        dosBotones = new DosBotones(parentframe, true, 2, o);
+        dosBotones.setVisible(true);
+        if(dosBotones.exito())
+        {
+            totales();
+        }
+    }//GEN-LAST:event_btnFinalizaActionPerformed
 
     /**
      * @param args the command line arguments

@@ -37,6 +37,33 @@ public class DatosPersonales extends javax.swing.JPanel {
         mysql.desconectar();
         estilos(empleado);
         datos(empleado);
+        validacion(empleado.getCargo());
+    }
+    
+    public void validacion(String nivel)
+    {
+        if(nivel.equals("Administrador"))
+        {
+            txtName.setEnabled(true);
+            txtFirst.setEnabled(true);
+            txtSecond.setEnabled(true);
+            txtPass.setEnabled(true);
+            cmbSexo.setEnabled(true);
+            
+            txtCorreo.setEnabled(true);
+            txtFon.setEnabled(true);
+        }
+        else
+        {
+            txtName.setEnabled(false);
+            txtFirst.setEnabled(false);
+            txtSecond.setEnabled(false);
+            txtPass.setEnabled(false);
+            cmbSexo.setEnabled(false);
+            
+            txtCorreo.setEnabled(true);
+            txtFon.setEnabled(true);
+        }
     }
     
     public void estilos(Empleado emp)

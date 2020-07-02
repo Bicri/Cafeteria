@@ -21,6 +21,7 @@ public class DosBotones extends javax.swing.JDialog {
     /*
         0 = Eliminar empleado
         1 = elimina plato
+        2 = finalizar dia
     */
     
     private Fuentes tipograf = new Fuentes();
@@ -53,6 +54,11 @@ public class DosBotones extends javax.swing.JDialog {
             plato = (Platillo) o;
             lbltitulo.setText("Eliminar platillo");
             lblMensaje.setText("<html> <body>¿Deseas eliminar el platillo "+plato.getIdPlatillo()+" <br> "+plato.getNombrePlatillo()+"?</body> </html>");
+        }
+        else if(flag2 == 2)
+        {
+            lbltitulo.setText("Finalizar dia");
+            lblMensaje.setText("¿Deseas terminar las operaciones del dia?");
         }
     }
 
@@ -176,6 +182,10 @@ public class DosBotones extends javax.swing.JDialog {
         else if(flag2 == 1)
         {
             mysql.eliminaPlato(plato.getIdPlatillo());
+        }
+        else if(flag2 == 2)
+        {
+            mysql.FinalizaDia();
         }
         mysql.desconectar();
         dispose();

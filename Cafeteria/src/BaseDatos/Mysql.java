@@ -388,5 +388,19 @@ public class Mysql {
             return cantidad;
         }
         
+        public boolean FinalizaDia()
+        {
+            try
+            {
+                st = con.prepareStatement("DELETE FROM ordenes");
+                st.executeUpdate();
+                return true;
+            }catch(SQLException e)
+            {
+                System.out.println("ERROR AL ELIMINAR\n "+ e);
+            }
+            return false;   
+        }
+        
     
 }

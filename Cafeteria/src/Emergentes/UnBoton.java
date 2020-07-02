@@ -21,6 +21,10 @@ public class UnBoton extends javax.swing.JDialog {
         2 = error de contraseña
         3 = Error al tratar de eliminar
         4 = error al tratar de eliminar plato
+        5 = selecciona plato para orden
+        6 = sin texto en agregar plato orden
+        7 = ingresa cero en add orden
+        8 = error seleccionar para quita plato
     */
     
     Fuentes tipograf = new Fuentes();
@@ -59,6 +63,31 @@ public class UnBoton extends javax.swing.JDialog {
         {
             lbltitulo.setText("Error al eliminar");
             lblMensaje.setText("Selecciona un platillo para eliminarlo");
+        }
+        else if(flag == 5)
+        {
+            lbltitulo.setText("Error");
+            lblMensaje.setText("Selecciona un platillo para agregarlo");
+        }
+        else if(flag == 6)
+        {
+            lbltitulo.setText("Error");
+            lblMensaje.setText("Escribe la cantidad a agregar");
+        }
+        else if(flag == 7)
+        {
+            lbltitulo.setText("Error");
+            lblMensaje.setText("Escribe una cantidad mayor a cero");
+        }
+        else if(flag == 8)
+        {
+            lbltitulo.setText("Error");
+            lblMensaje.setText("Selecciona un platillo para quitarlo");
+        }
+        else if(flag == 9)
+        {
+            lbltitulo.setText("Error");
+            lblMensaje.setText("La cantidad a quitar es mayor a la establecida");
         }
     }
 
