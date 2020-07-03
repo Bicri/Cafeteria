@@ -7,9 +7,12 @@ package cafeteria;
 
 import BaseDatos.Mysql;
 import Emergentes.UnBoton;
+import com.sun.glass.events.KeyEvent;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Window;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.SwingUtilities;
 import objetos.Empleado;
 import tipografia.Fuentes;
@@ -119,32 +122,62 @@ public class DatosPersonales extends javax.swing.JPanel {
         txtPass.setText(genPass);
     }
     
-
+    public boolean valCorreo()
+    {
+        Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"+"[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+        Matcher mather = pattern.matcher(txtCorreo.getText());
+        if(mather.find())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     
     public void edicion()
     {
-        empleado2.setNumeroEmpleado(lblID2.getText());
-        empleado2.setNombre(txtName.getText());
-        empleado2.setPrimerApellido(txtFirst.getText());
-        empleado2.setSegundoApellido(txtSecond.getText());
-        empleado2.setCargo(lblCargo2.getText());
-        empleado2.setCorreo(txtCorreo.getText());
-        empleado2.setTelefono(Integer.parseInt(txtFon.getText()));
-        empleado2.setSexo((String)cmbSexo.getSelectedItem());
+        Window parentWindow = SwingUtilities.windowForComponent(this);
+            Frame parentframe = null;
+            if(parentWindow instanceof Frame)
+            {
+                parentframe = (Frame)parentWindow;
+            }
+        if(valCorreo())
+        {
+            empleado2.setNumeroEmpleado(lblID2.getText());
+            empleado2.setNombre(txtName.getText());
+            empleado2.setPrimerApellido(txtFirst.getText());
+            empleado2.setSegundoApellido(txtSecond.getText());
+            empleado2.setCargo(lblCargo2.getText());
+            empleado2.setCorreo(txtCorreo.getText());
+            empleado2.setTelefono(Integer.parseInt(txtFon.getText()));
+            empleado2.setSexo((String)cmbSexo.getSelectedItem());
+
+            if(txtPass.getText().equals(genPass))
+            {
+                empleado2.setContraseña(empleado.getContraseña());
+            }
+            else if( (!(txtPass.getText().indexOf("•")>-1))  )
+            {
+                empleado2.setContraseña(txtPass.getText());
+            }
+            empleado = empleado2;
+            mysql.conectar();
+            mysql.actualizaEmpleado(empleado);
+            mysql.desconectar();
+            datos(empleado);
+            UnBoton emergente = new UnBoton(parentframe, true, 0);
+            emergente.setVisible(true);
+        }
+        else
+        {
+            
+            UnBoton emergente = new UnBoton(parentframe, true, 19);
+            emergente.setVisible(true);
+        }
         
-        if(txtPass.getText().equals(genPass))
-        {
-            empleado2.setContraseña(empleado.getContraseña());
-        }
-        else if( (!(txtPass.getText().indexOf("•")>-1))  )
-        {
-            empleado2.setContraseña(txtPass.getText());
-        }
-        empleado = empleado2;
-        mysql.conectar();
-        mysql.actualizaEmpleado(empleado);
-        mysql.desconectar();
-        datos(empleado);
     }
     
     
@@ -206,15 +239,35 @@ public class DatosPersonales extends javax.swing.JPanel {
                 txtNameActionPerformed(evt);
             }
         });
+        txtName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNameKeyTyped(evt);
+            }
+        });
 
         txtFirst.setBgShadeHover(new java.awt.Color(191, 141, 0));
         txtFirst.setPlaceholder("");
+        txtFirst.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtFirstKeyTyped(evt);
+            }
+        });
 
         txtSecond.setBgShadeHover(new java.awt.Color(191, 141, 0));
         txtSecond.setPlaceholder("");
+        txtSecond.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtSecondKeyTyped(evt);
+            }
+        });
 
         txtPass.setBgShadeHover(new java.awt.Color(191, 141, 0));
         txtPass.setPlaceholder("");
+        txtPass.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPassKeyTyped(evt);
+            }
+        });
 
         lblTel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         lblTel.setText("Telefono:");
@@ -233,9 +286,19 @@ public class DatosPersonales extends javax.swing.JPanel {
 
         txtCorreo.setBgShadeHover(new java.awt.Color(191, 141, 0));
         txtCorreo.setPlaceholder("");
+        txtCorreo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCorreoKeyTyped(evt);
+            }
+        });
 
         txtFon.setBgShadeHover(new java.awt.Color(191, 141, 0));
         txtFon.setPlaceholder("");
+        txtFon.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtFonKeyTyped(evt);
+            }
+        });
 
         btnVer.setBackground(new java.awt.Color(0, 255, 0));
         btnVer.setText("Ver");
@@ -416,13 +479,73 @@ public class DatosPersonales extends javax.swing.JPanel {
             else
             {
                 edicion();
-                UnBoton emergente = new UnBoton(parentframe, true, 0);
-                emergente.setVisible(true);
+                
             }
         }
         
         
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void txtNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNameKeyTyped
+        // TODO add your handling code here:
+        char validar = evt.getKeyChar();
+        if(Character.isDigit(validar) || txtName.getText().length()==20)
+        {
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNameKeyTyped
+
+    private void txtFirstKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFirstKeyTyped
+        // TODO add your handling code here:
+        char validar = evt.getKeyChar();
+        if(Character.isDigit(validar) || txtFirst.getText().length()==15)
+        {
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtFirstKeyTyped
+
+    private void txtSecondKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSecondKeyTyped
+        // TODO add your handling code here:
+        char validar = evt.getKeyChar();
+        if(Character.isDigit(validar) || txtSecond.getText().length()==15)
+        {
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtSecondKeyTyped
+
+    private void txtPassKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPassKeyTyped
+        // TODO add your handling code here:
+        char caracter = evt.getKeyChar();
+        
+       if(txtPass.getText().length()==15)
+        {
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtPassKeyTyped
+
+    private void txtCorreoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCorreoKeyTyped
+        // TODO add your handling code here:
+        if(txtCorreo.getText().length()==50)
+        {
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCorreoKeyTyped
+
+    private void txtFonKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFonKeyTyped
+        // TODO add your handling code here:
+        char caracter = evt.getKeyChar();
+        
+       if(Character.isLetter(caracter) || caracter == KeyEvent.VK_SPACE  || caracter==',' || caracter == '.' || txtFon.getText().length()==10)
+        {
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtFonKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

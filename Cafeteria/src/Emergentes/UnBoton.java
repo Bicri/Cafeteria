@@ -142,6 +142,11 @@ public class UnBoton extends javax.swing.JDialog {
             lbltitulo.setText("Error");
             lblMensaje.setText("<html><body>Las ventas del día ya han sido cerradas<body></html>");
         }
+        else if(flag==19)
+        {
+            lbltitulo.setText("Error");
+            lblMensaje.setText("<html><body>Correo no válido<body></html>");
+        }
     }
 
     private UnBoton(JFrame jFrame, boolean b) {

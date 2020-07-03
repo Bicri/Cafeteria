@@ -6,6 +6,7 @@
 package Emergentes;
 
 import BaseDatos.Mysql;
+import com.sun.glass.events.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import objetos.Platillo;
@@ -104,7 +105,7 @@ public class EditarPlato extends javax.swing.JDialog {
 
         lbltitle.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         lbltitle.setForeground(new java.awt.Color(181, 8, 37));
-        lbltitle.setText("Agregar Platillo");
+        lbltitle.setText("Editar Platillo");
         cabecera.add(lbltitle);
 
         getContentPane().add(cabecera, java.awt.BorderLayout.PAGE_START);
@@ -122,12 +123,22 @@ public class EditarPlato extends javax.swing.JDialog {
 
         txtNombre.setBgShadeHover(new java.awt.Color(191, 141, 0));
         txtNombre.setPlaceholder("");
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
 
         lblFirts.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblFirts.setText("Precio");
 
         txtPrecio.setBgShadeHover(new java.awt.Color(191, 141, 0));
         txtPrecio.setPlaceholder("");
+        txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrecioKeyTyped(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 50, 5));
@@ -237,6 +248,37 @@ public class EditarPlato extends javax.swing.JDialog {
             
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void txtPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyTyped
+        char caracter = evt.getKeyChar();
+        
+       if(Character.isLetter(caracter) || caracter == KeyEvent.VK_SPACE  || caracter==',' || (caracter == '.' && txtPrecio.getText().length()==0))
+        {
+            getToolkit().beep();
+            evt.consume();
+        }
+        else 
+       {
+            if(txtPrecio.getText().contains(".") && caracter == '.')
+            {
+                evt.consume();
+            }
+       }
+       
+       lblError.setVisible(false);
+    }//GEN-LAST:event_txtPrecioKeyTyped
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        // TODO add your handling code here:
+        char caracter = evt.getKeyChar();
+        
+       if(txtNombre.getText().length() == 28 || caracter==',')
+        {
+            getToolkit().beep();
+            evt.consume();
+        }
+       lblError.setVisible(false);
+    }//GEN-LAST:event_txtNombreKeyTyped
 
     /**
      * @param args the command line arguments

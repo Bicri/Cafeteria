@@ -6,7 +6,10 @@
 package Emergentes;
 
 import BaseDatos.Mysql;
+import com.sun.glass.events.KeyEvent;
 import java.awt.event.ItemEvent;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
 import objetos.Empleado;
 import tipografia.Fuentes;
@@ -159,6 +162,11 @@ public class Inserta extends javax.swing.JDialog {
 
         txtNombre.setBgShadeHover(new java.awt.Color(191, 141, 0));
         txtNombre.setPlaceholder("");
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
 
         lblFirts.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblFirts.setText("Primer Apellido:");
@@ -171,12 +179,27 @@ public class Inserta extends javax.swing.JDialog {
 
         txtFirst.setBgShadeHover(new java.awt.Color(191, 141, 0));
         txtFirst.setPlaceholder("");
+        txtFirst.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtFirstKeyTyped(evt);
+            }
+        });
 
         txtSecond.setBgShadeHover(new java.awt.Color(191, 141, 0));
         txtSecond.setPlaceholder("");
+        txtSecond.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtSecondKeyTyped(evt);
+            }
+        });
 
         txtPass.setBgShadeHover(new java.awt.Color(191, 141, 0));
         txtPass.setPlaceholder("");
+        txtPass.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPassKeyTyped(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 50, 5));
@@ -213,6 +236,11 @@ public class Inserta extends javax.swing.JDialog {
                 txtCorreoActionPerformed(evt);
             }
         });
+        txtCorreo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCorreoKeyTyped(evt);
+            }
+        });
 
         lblSexo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblSexo.setText("Sexo:");
@@ -228,6 +256,11 @@ public class Inserta extends javax.swing.JDialog {
         txtTelefono.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTelefonoActionPerformed(evt);
+            }
+        });
+        txtTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtTelefonoKeyTyped(evt);
             }
         });
 
@@ -356,15 +389,37 @@ public class Inserta extends javax.swing.JDialog {
             {   
                 lblError.setVisible(false);
                 //Validacion de correo
-                emp = new Empleado(lblId2.getText(),Integer.parseInt(txtTelefono.getText()),txtCorreo.getText(),String.valueOf(cmbCargo.getSelectedItem()),txtPass.getText(), txtNombre.getText(),txtFirst.getText(),txtSecond.getText(),String.valueOf(cmbSexo.getSelectedItem()));
-                mysql.conectar();
-                mysql.insertaEmpleado(emp);
-                mysql.desconectar();
-                dispose();
+                if(valCorreo())
+                {
+                    emp = new Empleado(lblId2.getText(),Integer.parseInt(txtTelefono.getText()),txtCorreo.getText(),String.valueOf(cmbCargo.getSelectedItem()),txtPass.getText(), txtNombre.getText(),txtFirst.getText(),txtSecond.getText(),String.valueOf(cmbSexo.getSelectedItem()));
+                    mysql.conectar();
+                    mysql.insertaEmpleado(emp);
+                    mysql.desconectar();
+                    dispose();
+                }
+                else
+                {
+                    lblError.setVisible(true);
+                    lblError.setText("Correo no válido");
+                }
             }
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
+    public boolean valCorreo()
+    {
+        Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"+"[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+        Matcher mather = pattern.matcher(txtCorreo.getText());
+        if(mather.find())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
     private void cmbCargoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbCargoMouseClicked
         // TODO add your handling code here:
         
@@ -390,6 +445,7 @@ public class Inserta extends javax.swing.JDialog {
                 lblId2.setText(generaid.generarEmpleado((String)cmbCargo.getSelectedItem()));
             }
         }
+        lblError.setVisible(false);
     }//GEN-LAST:event_cmbCargoItemStateChanged
 
     private void txtCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoActionPerformed
@@ -403,6 +459,73 @@ public class Inserta extends javax.swing.JDialog {
     private void txtTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefonoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTelefonoActionPerformed
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        // TODO add your handling code here:
+        char validar = evt.getKeyChar();
+        if(Character.isDigit(validar) || txtNombre.getText().length()==20)
+        {
+            getToolkit().beep();
+            evt.consume();
+        }
+        lblError.setVisible(false);
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtFirstKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFirstKeyTyped
+        // TODO add your handling code here:
+        char validar = evt.getKeyChar();
+        if(Character.isDigit(validar) || txtFirst.getText().length()==15)
+        {
+            getToolkit().beep();
+            evt.consume();
+        }
+        lblError.setVisible(false);
+    }//GEN-LAST:event_txtFirstKeyTyped
+
+    private void txtSecondKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSecondKeyTyped
+        // TODO add your handling code here:
+        char validar = evt.getKeyChar();
+        if(Character.isDigit(validar) || txtSecond.getText().length()==15)
+        {
+            getToolkit().beep();
+            evt.consume();
+        }
+        lblError.setVisible(false);
+    }//GEN-LAST:event_txtSecondKeyTyped
+
+    private void txtTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoKeyTyped
+        // TODO add your handling code here:
+       char caracter = evt.getKeyChar();
+        
+       if(Character.isLetter(caracter) || caracter == KeyEvent.VK_SPACE  || caracter==',' || caracter == '.' || txtTelefono.getText().length()==10)
+        {
+            getToolkit().beep();
+            evt.consume();
+        }
+       lblError.setVisible(false);
+    }//GEN-LAST:event_txtTelefonoKeyTyped
+
+    private void txtCorreoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCorreoKeyTyped
+        // TODO add your handling code here:
+        if(txtCorreo.getText().length()==50)
+        {
+            getToolkit().beep();
+            evt.consume();
+        }
+        lblError.setVisible(false);
+    }//GEN-LAST:event_txtCorreoKeyTyped
+
+    private void txtPassKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPassKeyTyped
+        // TODO add your handling code here:
+        char caracter = evt.getKeyChar();
+        
+       if(txtPass.getText().length()==15)
+        {
+            getToolkit().beep();
+            evt.consume();
+        }
+       lblError.setVisible(false);
+    }//GEN-LAST:event_txtPassKeyTyped
 
     /**
      * @param args the command line arguments

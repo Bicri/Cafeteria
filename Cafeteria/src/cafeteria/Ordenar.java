@@ -329,8 +329,18 @@ public class Ordenar extends javax.swing.JPanel {
         });
 
         txtAdd.setPlaceholder("Cantidad");
+        txtAdd.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtAddKeyTyped(evt);
+            }
+        });
 
         txtQuit.setPlaceholder("Cantidad");
+        txtQuit.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtQuitKeyTyped(evt);
+            }
+        });
 
         btnLimpiar.setBackground(new java.awt.Color(181, 8, 37));
         btnLimpiar.setForeground(new java.awt.Color(255, 255, 255));
@@ -714,6 +724,28 @@ public class Ordenar extends javax.swing.JPanel {
         }
         
     }//GEN-LAST:event_btnAceptaActionPerformed
+
+    private void txtAddKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAddKeyTyped
+        // TODO add your handling code here:
+        char caracter = evt.getKeyChar();
+        
+       if(Character.isLetter(caracter) || caracter == KeyEvent.VK_SPACE  || caracter==',' || caracter == '.')
+        {
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtAddKeyTyped
+
+    private void txtQuitKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQuitKeyTyped
+        // TODO add your handling code here:
+        char caracter = evt.getKeyChar();
+        
+       if(Character.isLetter(caracter) || caracter == KeyEvent.VK_SPACE  || caracter==',' || caracter == '.')
+        {
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtQuitKeyTyped
 
     private String pasaString ()
     {

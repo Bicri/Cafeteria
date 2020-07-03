@@ -167,9 +167,19 @@ public class Login extends javax.swing.JFrame {
 
         txtUser.setBgShadeHover(new java.awt.Color(191, 141, 0));
         txtUser.setPlaceholder("Usuario");
+        txtUser.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtUserKeyTyped(evt);
+            }
+        });
 
         txtPass.setBgShadeHover(new java.awt.Color(191, 141, 0));
         txtPass.setPlaceholder("Contraseña");
+        txtPass.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPassKeyTyped(evt);
+            }
+        });
 
         btnLogin.setBackground(new java.awt.Color(131, 8, 37));
         btnLogin.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
@@ -267,34 +277,42 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        if(mysql.iniciar_sesion(txtUser.getText(), txtPass.getText())== true)
+        if(txtUser.getText().equals("A0") || txtUser.getText().equals("a0"))
         {
-            empleado = mysql.get1empelado(txtUser.getText());
-            mysql.desconectar();
-            if(empleado.getCargo().equals("Administrador"))
-            {   
-                admin = new InicioAdmin(empleado.getNumeroEmpleado());
-                admin.setVisible(true);
-                this.dispose();
-            }
-            else if(empleado.getCargo().equals("Cajero"))
-            {
-                cajero = new InicioCajero(empleado.getNumeroEmpleado());
-                cajero.setVisible(true);
-                this.dispose();
-            }
-            else if(empleado.getCargo().equals("Chef"))
-            {
-                chef = new InicioChef(empleado.getNumeroEmpleado());
-                chef.setVisible(true);
-                this.dispose();
-            }
+            lblError.setVisible(true);
+            lblError.setText("Permiso denegado");
         }
         else
         {
-            lblError.setVisible(true);
+            if(mysql.iniciar_sesion(txtUser.getText(), txtPass.getText())== true)
+            {
+                empleado = mysql.get1empelado(txtUser.getText());
+                mysql.desconectar();
+                if(empleado.getCargo().equals("Administrador"))
+                {   
+                    admin = new InicioAdmin(empleado.getNumeroEmpleado());
+                    admin.setVisible(true);
+                    this.dispose();
+                }
+                else if(empleado.getCargo().equals("Cajero"))
+                {
+                    cajero = new InicioCajero(empleado.getNumeroEmpleado());
+                    cajero.setVisible(true);
+                    this.dispose();
+                }
+                else if(empleado.getCargo().equals("Chef"))
+                {
+                    chef = new InicioChef(empleado.getNumeroEmpleado());
+                    chef.setVisible(true);
+                    this.dispose();
+                }
+            }
+            else
+            {
+                lblError.setVisible(true);
+            }
+            mysql.desconectar();
         }
-        mysql.desconectar();
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnLoginMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseEntered
@@ -330,6 +348,16 @@ public class Login extends javax.swing.JFrame {
         recuperar = new Recuperar(parentframe, true);
         recuperar.setVisible(true);
     }//GEN-LAST:event_lblLinkerMouseClicked
+
+    private void txtUserKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUserKeyTyped
+        // TODO add your handling code here:
+        lblError.setVisible(false);
+    }//GEN-LAST:event_txtUserKeyTyped
+
+    private void txtPassKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPassKeyTyped
+        // TODO add your handling code here:
+        lblError.setVisible(false);
+    }//GEN-LAST:event_txtPassKeyTyped
 
     /**
      * @param args the command line arguments

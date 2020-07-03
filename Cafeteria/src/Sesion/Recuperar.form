@@ -181,16 +181,25 @@
               <Properties>
                 <Property name="placeholder" type="java.lang.String" value=""/>
               </Properties>
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtIdKeyTyped"/>
+              </Events>
             </Component>
             <Component class="rscomponentshade.RSPassFieldShade" name="txtPass">
               <Properties>
                 <Property name="placeholder" type="java.lang.String" value=""/>
               </Properties>
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPassKeyTyped"/>
+              </Events>
             </Component>
             <Component class="rscomponentshade.RSTextFieldShade" name="txtUser">
               <Properties>
                 <Property name="placeholder" type="java.lang.String" value=""/>
               </Properties>
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtUserKeyTyped"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

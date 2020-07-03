@@ -374,11 +374,17 @@
       <Properties>
         <Property name="placeholder" type="java.lang.String" value="Cantidad"/>
       </Properties>
+      <Events>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtAddKeyTyped"/>
+      </Events>
     </Component>
     <Component class="rscomponentshade.RSTextFieldShade" name="txtQuit">
       <Properties>
         <Property name="placeholder" type="java.lang.String" value="Cantidad"/>
       </Properties>
+      <Events>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtQuitKeyTyped"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnLimpiar">
       <Properties>
