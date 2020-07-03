@@ -120,6 +120,9 @@ public class Ordenar extends javax.swing.JPanel {
         btnQuit.setFont(tipografia.fuente(tipografia.pragatiNarrowRegular, 1, 16));
         btnAcepta.setFont(tipografia.fuente(tipografia.pragatiNarrowRegular, 1, 16));
         btnLimpiar.setFont(tipografia.fuente(tipografia.pragatiNarrowRegular, 1, 16));
+        
+        txtTotal.setEnabled(false);
+        txtCambio.setEnabled(false);
     }
 //------------------------- TABLA MENU ----------------------------------------------------------------------------------
     public void tablaLlena ()

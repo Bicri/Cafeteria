@@ -32,6 +32,7 @@ public class UnBoton extends javax.swing.JDialog {
         13 = pago insuficiente
         14 = error de seleccion
         15 = error cambio en cola a terminada
+        16 = cambio en proceso a cola
     */
     
     Fuentes tipograf = new Fuentes();
@@ -124,7 +125,22 @@ public class UnBoton extends javax.swing.JDialog {
         else if(flag == 15)
         {
             lbltitulo.setText("Error de estado");
-            lblMensaje.setText("No se puede cambiar el estado En cola a Terminado");
+            lblMensaje.setText("No se puede cambiar el estado En cola a Entregada");
+        }
+        else if(flag == 16)
+        {
+            lbltitulo.setText("Advertencia");
+            lblMensaje.setText("<html><body>Una orden En proceso, solo puede <br>ser cambiada a orden En cola<body></html>");
+        }
+        else if(flag == 17)
+        {
+            lbltitulo.setText("Error");
+            lblMensaje.setText("<html><body>No puede cambiar una orden En cola o <br>Terminada a un estado En cola<body></html>");
+        }
+        else if(flag == 18)
+        {
+            lbltitulo.setText("Error");
+            lblMensaje.setText("<html><body>Las ventas del día ya han sido cerradas<body></html>");
         }
     }
 

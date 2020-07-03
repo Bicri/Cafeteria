@@ -42,6 +42,7 @@ public class GenerarId {
         {
             numero += plat.charAt(i);
         }
+        System.out.println(numero);
         cont = Integer.parseInt(numero) + 1;
         letra = "OR" + String.valueOf(cont);
        return letra;

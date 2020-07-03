@@ -75,6 +75,7 @@ public class Estados extends javax.swing.JPanel {
         
         cmbStatus.addItem("Entregada");
         cmbStatus.addItem("Cancelada");
+        cmbStatus.addItem("En cola");
         
     }
     
@@ -245,7 +246,9 @@ public class Estados extends javax.swing.JPanel {
         if(evt.getStateChange() == ItemEvent.SELECTED)
         {
             tablaLlena(cmbFiltro.getSelectedItem().toString());
-            if(cmbFiltro.getSelectedItem().equals("En proceso") || cmbFiltro.getSelectedItem().equals("Entregada") || cmbFiltro.getSelectedItem().equals("Cancelada"))
+            lblId2.setText("Selecciona");
+            estado="";
+            if( cmbFiltro.getSelectedItem().equals("Entregada") || cmbFiltro.getSelectedItem().equals("Cancelada"))
             {
                 btnestado.setEnabled(false);
                 btnestado.setBackground(new Color(51,51,51));
@@ -261,7 +264,7 @@ public class Estados extends javax.swing.JPanel {
     private void tblEstatusMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEstatusMousePressed
         lblId2.setText(tblEstatus.getValueAt(tblEstatus.getSelectedRow(), 0).toString());
         estado = tblEstatus.getValueAt(tblEstatus.getSelectedRow(), 2).toString();
-        if(estado.equals("En proceso") || estado.equals("Entregada") || estado.equals("Cancelada"))
+        if(estado.equals("Entregada") || estado.equals("Cancelada"))
         {
             btnestado.setEnabled(false);
             btnestado.setBackground(new Color(51,51,51));
@@ -299,6 +302,28 @@ public class Estados extends javax.swing.JPanel {
                 }
                 unboton = new UnBoton(parentframe, true, 15);
                 unboton.setVisible(true);
+            
+            }else if(estado.equals("En proceso")&&(cmbStatus.getSelectedItem().toString().equals("Entregada")||cmbStatus.getSelectedItem().toString().equals("Cancelada")))
+            {
+                Window parentWindow = SwingUtilities.windowForComponent(this);
+                Frame parentframe = null;
+                if(parentWindow instanceof Frame)
+                {
+                    parentframe = (Frame)parentWindow;
+                }
+                unboton = new UnBoton(parentframe, true, 16);
+                unboton.setVisible(true);
+            }
+            else if((estado.equals("En cola")|| estado.equals("Terminada"))&&cmbStatus.getSelectedItem().toString().equals("En cola"))
+            {
+                Window parentWindow = SwingUtilities.windowForComponent(this);
+                Frame parentframe = null;
+                if(parentWindow instanceof Frame)
+                {
+                    parentframe = (Frame)parentWindow;
+                }
+                unboton = new UnBoton(parentframe, true, 17);
+                unboton.setVisible(true);
             }
             else
             {
@@ -313,8 +338,8 @@ public class Estados extends javax.swing.JPanel {
         mysql.ActualizaOrden(lblId2.getText(), cmbStatus.getSelectedItem().toString());
         mysql.desconectar();
             
-        cmbFiltro.setSelectedIndex(0);
-        tablaLlena("En cola");
+        //cmbFiltro.setSelectedIndex(0);
+        tablaLlena(estado);
             
         lblId2.setText("Selecciona");
         estado = "";

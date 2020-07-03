@@ -6,8 +6,13 @@
 package cafeteria;
 
 import BaseDatos.Mysql;
+import Emergentes.DosBotones;
+import java.awt.Color;
+import java.awt.Frame;
+import java.awt.Window;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import objetos.Orden;
 import tipografia.Fuentes;
@@ -25,6 +30,8 @@ public class PrepararOrden extends javax.swing.JPanel {
     private Mysql mysql = new Mysql();
     private Orden ordenget, ordentabla;
     private List <Orden> listaorden = new ArrayList<>();
+    private Transformada transforma = new Transformada();
+    private DosBotones dosbotones;
     
     DefaultTableModel modelo = new DefaultTableModel(){
         @Override
@@ -43,6 +50,7 @@ public class PrepararOrden extends javax.swing.JPanel {
     public PrepararOrden() {
         initComponents();
         estilos();
+        ValidaOrden();
     }
 
     public void estilos()
@@ -187,62 +195,85 @@ public class PrepararOrden extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEndActionPerformed
-        // TODO add your handling code here:
+        Window parentWindow = SwingUtilities.windowForComponent(this);
+        Frame parentframe = null;
+        if(parentWindow instanceof Frame)
+        {
+            parentframe = (Frame)parentWindow;
+        }
+        dosbotones = new DosBotones(parentframe, true, 3, ordenget);
+        dosbotones.setVisible(true);
+        if(dosbotones.respuesta()==true)
+        {
+            ValidaOrden();
+        }
+        else{}
     }//GEN-LAST:event_btnEndActionPerformed
 
     private void btnTerminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTerminarActionPerformed
-        // TODO add your handling code here:
+        mysql.conectar();
+        mysql.ActualizaOrden(ordenget.getIdOrden(), "Terminada");
+        mysql.desconectar();
+        ValidaOrden();
     }//GEN-LAST:event_btnTerminarActionPerformed
 
     private void btnGetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetActionPerformed
         // TODO add your handling code here:
-        obtenerOrden();
+        ValidaOrden();
     }//GEN-LAST:event_btnGetActionPerformed
 
-    public void obtenerOrden()
+    private void ValidaOrden()
+    {
+        mysql.conectar();
+        if(mysql.countFirstOrden("En cola")>0)
+        {
+            btnGet.setEnabled(false);
+            btnGet.setBackground(new Color(51,51,51));
+            mysql.desconectar();
+            btnEnd.setEnabled(true);
+            btnTerminar.setEnabled(true);
+            btnEnd.setBackground(new Color(181,8,37));
+            btnTerminar.setBackground(new Color(181,8,37));
+            obtenerOrden();
+        }
+        else
+        {
+            mysql.desconectar();
+            listaorden.clear();
+            tablaLlena();
+            lbltitulo.setText("SIN ORDEN PENDIENTE, CONTROLES DESHABILITADOS");
+            btnEnd.setEnabled(false);
+            btnTerminar.setEnabled(false);
+            btnEnd.setBackground(new Color(51,51,51));
+            btnTerminar.setBackground(new Color(51,51,51));
+            btnGet.setEnabled(true);
+            btnGet.setBackground(new Color(51,255,51));
+        }
+    }
+    
+    private void obtenerOrden()
     {
         mysql.conectar();
         ordenget = mysql.getFirstOrden("En cola");
+        mysql.ActualizaOrden(ordenget.getIdOrden(), "En proceso");
         mysql.desconectar();
-        System.out.println(ordenget.toString());
-        descomposicion(ordenget.getPlatillos());
+        listaorden = transforma.separaProd(ordenget.getPlatillos(), 0);
+        tablaLlena();
+        lbltitulo.setText("Orden: "+ordenget.getIdOrden());
+ 
     }
     
-    public void descomposicion(String p)
+    public void tablaLlena ()
     {
-        System.out.println(p.length()+"-->"+p);
-        String cantidad="", identificador="", producto="";
-        boolean flag1=false,flag2=false,flag3=false;
-        for(int i =0; i<p.length(); i++)
+        modelo.setRowCount(0);
+        modelo.setColumnIdentifiers(new Object[]{"Cantidad","Id platillo", "Nombre platillo"});
+        for(Orden aux : listaorden)
         {
-            if(flag1==false && p.charAt(i)!=' ' && p.charAt(i)!=',')
-            {
-                cantidad+=p.charAt(i);
-            }else
-            {
-                flag1=true;
-                if(flag2==false && p.charAt(i)!=' ' && p.charAt(i)!=',')
-                {
-                    identificador+=p.charAt(i);
-                }
-                else
-                {
-                    flag2=true;
-                    if(flag3==false && p.charAt(i)!=',')
-                    {
-                        producto+=p.charAt(i);
-                    }
-                    else
-                    {
-                        flag3=true;
-                        System.out.println(cantidad+"->"+identificador+"->"+producto);
-                        flag1=false; flag2=false; flag3 = false;
-                        cantidad=""; identificador=""; producto="";
-                    }
-                }
-            }
+            modelo.addRow(new Object[]{aux.getCantidad(),aux.getIdPlatillo(), aux.getNombrePlatillo()});
         }
+        tblPlatillos.setModel(modelo);
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEnd;
     private javax.swing.JButton btnGet;

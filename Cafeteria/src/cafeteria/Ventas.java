@@ -281,18 +281,33 @@ public class Ventas extends javax.swing.JFrame {
 
     private void btnFinalizaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizaActionPerformed
         // TODO add your handling code here:
-        Object o = null;
-        Window parentWindow = SwingUtilities.windowForComponent(this);
-        Frame parentframe = null;
-        if(parentWindow instanceof Frame)
+        mysql.conectar();
+        if(mysql.validarventas())
         {
-            parentframe = (Frame)parentWindow;
+            Window parentWindow = SwingUtilities.windowForComponent(this);
+            Frame parentframe = null;
+            if(parentWindow instanceof Frame)
+            {
+                parentframe = (Frame)parentWindow;
+            }
+            unboton = new UnBoton(parentframe, true, 18);
+            unboton.setVisible(true);
         }
-        dosBotones = new DosBotones(parentframe, true, 2, o);
-        dosBotones.setVisible(true);
-        if(dosBotones.exito())
+        else
         {
-            totales();
+            Object o = null;
+            Window parentWindow = SwingUtilities.windowForComponent(this);
+            Frame parentframe = null;
+            if(parentWindow instanceof Frame)
+            {
+                parentframe = (Frame)parentWindow;
+            }
+            dosBotones = new DosBotones(parentframe, true, 2, o);
+            dosBotones.setVisible(true);
+            if(dosBotones.exito())
+            {
+                totales();
+            }
         }
     }//GEN-LAST:event_btnFinalizaActionPerformed
 

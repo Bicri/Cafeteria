@@ -9,6 +9,7 @@ import BaseDatos.Mysql;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import objetos.Empleado;
+import objetos.Orden;
 import objetos.Platillo;
 import tipografia.Fuentes;
 
@@ -22,13 +23,16 @@ public class DosBotones extends javax.swing.JDialog {
         0 = Eliminar empleado
         1 = elimina plato
         2 = finalizar dia
+        3 = Cancelar orden;
     */
     
     private Fuentes tipograf = new Fuentes();
     private Empleado emp = new Empleado();
+    private Orden orden = new Orden();
     private Platillo plato = new Platillo();
     private Mysql mysql = new Mysql();
     private int flag2;
+    boolean flag;
     
     
     public DosBotones(java.awt.Frame parent, boolean modal, int flag, Object o) {
@@ -39,6 +43,11 @@ public class DosBotones extends javax.swing.JDialog {
         estilos();
         flag2 = flag;
         validacion(o);
+    }
+    
+    public boolean respuesta()
+    {
+        return flag;
     }
     
     public void validacion(Object o)
@@ -59,6 +68,13 @@ public class DosBotones extends javax.swing.JDialog {
         {
             lbltitulo.setText("Finalizar dia");
             lblMensaje.setText("¿Deseas terminar las operaciones del dia?");
+        }
+        else if(flag2 == 3)
+        {
+            orden = (Orden) o;
+            lbltitulo.setText("Cancelar orden");
+            lblMensaje.setText("¿Deseas cancelar la orden: "+orden.getIdOrden()+"?");
+            flag=true;
         }
     }
 
@@ -169,6 +185,7 @@ public class DosBotones extends javax.swing.JDialog {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
+        flag=false;
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
@@ -185,7 +202,12 @@ public class DosBotones extends javax.swing.JDialog {
         }
         else if(flag2 == 2)
         {
+            mysql.copyVentas();
             mysql.FinalizaDia();
+        }
+        else if(flag2==3)
+        {
+            mysql.ActualizaOrden(orden.getIdOrden(), "Cancelada");
         }
         mysql.desconectar();
         dispose();

@@ -1,13 +1,20 @@
 
 package BaseDatos;
 
+import Emergentes.DosBotones;
+import Emergentes.UnBoton;
 import com.mysql.jdbc.Connection;
+import java.awt.Frame;
+import java.awt.Window;
 import java.util.List;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import javax.swing.SwingUtilities;
 import objetos.Empleado;
 import objetos.Orden;
 import objetos.Platillo;
@@ -35,6 +42,7 @@ public class Mysql {
     private List <Platillo> listaplatilos = new ArrayList<>();
     private List <Empleado> listaEmpleado = new ArrayList<>();
     private List <Orden> listaOrdenes = new ArrayList<>();
+    private Calendar calendar = new GregorianCalendar();
     
     
         public boolean conectar() 
@@ -80,6 +88,24 @@ public class Mysql {
                 System.out.println("Error al mostrar" + e);
             }
             return orden;
+        }
+        
+        public int countFirstOrden(String estado)
+        {
+            int i = 0;
+            try{
+                st = con.prepareStatement("select * from ordenes where Estado = '"+estado+"' order by IdOrden ASC Limit 1");
+                result = st.executeQuery();
+                while(result.next())
+                {
+                    i++;       
+                }
+                
+            }catch(SQLException e)
+            {
+                System.out.println("Error al mostrar" + e);
+            }
+            return i;
         }
         
         public boolean iniciar_sesion(String user, String pass)
@@ -239,7 +265,7 @@ public class Mysql {
         {
             
             try{
-                st = con.prepareStatement("SELECT * FROM empleados WHERE NumeroEmpleado LIKE '"+inicial+"%' ORDER BY NumeroEmpleado DESC LIMIT 1");
+                st = con.prepareStatement("SELECT * FROM empleados WHERE NumeroEmpleado LIKE '"+inicial+"%' ORDER BY CAST(SUBSTR(NumeroEmpleado,2,LENGTH(NumeroEmpleado))AS UNSIGNED) DESC LIMIT 1");
                 result = st.executeQuery();
                 while(result.next())
                 {
@@ -260,6 +286,19 @@ public class Mysql {
                 System.out.println("Error al mostrar" + e);
             }
             return empleado;
+        }
+        public boolean lastEmp2(String inicial)
+        {
+            
+            try{
+                st = con.prepareStatement("SELECT * FROM empleados WHERE NumeroEmpleado LIKE '"+inicial+"%' ORDER BY CAST(SUBSTR(NumeroEmpleado,2,LENGTH(NumeroEmpleado))AS UNSIGNED) DESC LIMIT 1");
+                result = st.executeQuery();
+                return result.next();
+            }catch(SQLException e)
+            {
+                System.out.println("Error al mostrar" + e);
+            }
+            return false;
         }
         
         public int countPlatos()
@@ -302,7 +341,7 @@ public class Mysql {
         {
             
             try{
-                st = con.prepareStatement("SELECT * FROM menu  ORDER BY Idplatillo DESC LIMIT 1");
+                st = con.prepareStatement("select * from menu order by CAST(SUBSTR(Idplatillo,2,Length(Idplatillo))AS UNSIGNED) DESC LIMIT 1");
                 result = st.executeQuery();
                 while(result.next())
                 {
@@ -322,7 +361,7 @@ public class Mysql {
         {
             
             try{
-                st = con.prepareStatement("SELECT * FROM ordenes ORDER BY IdOrden DESC LIMIT 1");
+                st = con.prepareStatement("select * from ordenes order by CAST(SUBSTR(IdOrden,3,Length(IdOrden))AS UNSIGNED) DESC LIMIT 1");
                 result = st.executeQuery();
                 while(result.next())
                 {
@@ -336,19 +375,7 @@ public class Mysql {
             return "OR0";
         }
         
-        public boolean lastEmp2(String inicial)
-        {
-            
-            try{
-                st = con.prepareStatement("SELECT * FROM empleados WHERE NumeroEmpleado LIKE '"+inicial+"%' ORDER BY NumeroEmpleado DESC LIMIT 1");
-                result = st.executeQuery();
-                return result.next();
-            }catch(SQLException e)
-            {
-                System.out.println("Error al mostrar" + e);
-            }
-            return false;
-        }
+        
         
         public boolean insertaEmpleado(Empleado emp)
         {
@@ -479,6 +506,46 @@ public class Mysql {
                 System.out.println("ERROR AL ELIMINAR\n "+ e);
             }
             return false;   
+        }
+        
+        public boolean copyVentas()
+        {
+            float v =0;
+            String fecha = String.valueOf(calendar.get(Calendar.YEAR))+"/"+String.valueOf(calendar.get(Calendar.MONTH)+1)+"/"+String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+            try
+            {
+                v = ventas();
+                st = con.prepareStatement("INSERT INTO Ventas VALUES(?,?)");
+                st.setFloat(1, v);
+                st.setString(2, fecha);
+                st.execute();
+                return true;
+            }catch(SQLException e)
+            {
+                System.out.println(e);
+            }
+            return false; 
+        }
+        
+        public boolean validarventas()
+        {
+            boolean flag = false;
+            String fecha = String.valueOf(calendar.get(Calendar.YEAR))+"/"+String.valueOf(calendar.get(Calendar.MONTH)+1)+"/"+String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+            try
+            {
+                st = con.prepareStatement("Select * from ventas where Fecha = '"+fecha+"'");
+                result = st.executeQuery();
+                while(result.next())
+                {
+                    return true;
+                }
+                
+            }catch(Exception e)
+            {
+                System.out.println(e);
+            }
+            
+            return flag;
         }
         
         
