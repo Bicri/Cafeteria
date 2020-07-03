@@ -3,12 +3,14 @@ package Emergentes;
 
 import BaseDatos.Mysql;
 import objetos.Empleado;
+import objetos.Orden;
 import objetos.Platillo;
 
 
 
 public class GenerarId {
     
+   private Orden orden = new Orden();
    private Empleado empleado = new Empleado();
    private Platillo plato = new Platillo();
    private Mysql mysql = new Mysql();
@@ -17,6 +19,33 @@ public class GenerarId {
 
     public GenerarId() {
     }
+    
+    public String generaIdOrden()
+    {
+        mysql.conectar();
+        if(mysql.countOrdenes()>0)
+        {
+            orden.setIdOrden(mysql.lastOrden());
+            mysql.desconectar();
+            return aumentaIdOrden(orden.getIdOrden());
+        }else
+        {
+            mysql.desconectar();
+            return "OR1";
+        }
+    }
+    
+    private String aumentaIdOrden(String plat)
+   {
+       cont = 0; letra = ""; numero = "";
+        for(int i=2; i<plat.length(); i++)
+        {
+            numero += plat.charAt(i);
+        }
+        cont = Integer.parseInt(numero) + 1;
+        letra = "OR" + String.valueOf(cont);
+       return letra;
+   }
 
    
    public String generarEmpleado(String cargo)
@@ -96,7 +125,6 @@ public class GenerarId {
    
    private String aumentaIdPlato(String plat)
    {
-       System.out.println(plat + " " + plat.length());
        cont = 0; letra = ""; numero = "";
         for(int i=1; i<plat.length(); i++)
         {

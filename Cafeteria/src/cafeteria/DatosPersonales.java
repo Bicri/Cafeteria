@@ -141,6 +141,7 @@ public class DatosPersonales extends javax.swing.JPanel {
             empleado2.setContraseña(txtPass.getText());
         }
         empleado = empleado2;
+        mysql.conectar();
         mysql.actualizaEmpleado(empleado);
         mysql.desconectar();
         datos(empleado);

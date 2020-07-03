@@ -6,10 +6,14 @@
 package cafeteria;
 
 import BaseDatos.Mysql;
+import Emergentes.GenerarId;
 import Emergentes.UnBoton;
+import com.sun.glass.events.KeyEvent;
 import java.awt.Frame;
 import java.awt.Window;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.SwingUtilities;
@@ -30,12 +34,14 @@ public class Ordenar extends javax.swing.JPanel {
     private Fuentes tipografia = new Fuentes();
     private Platillo plato;
     private Mysql mysql = new Mysql();
-    private Orden orden, ordenQuitar;
+    private Orden orden, ordenQuitar, ordenGuardar;
     private String TotalPlatos = "0", v = "0";
     private List <Platillo> listaplatillos = new ArrayList<>();
     private List <Orden> listaorden = new ArrayList<>();
     private int i =-1;
     private UnBoton unboton;
+    private GenerarId genera = new GenerarId();
+    private Calendar calendar = new GregorianCalendar();
     
     DefaultTableModel modelo = new DefaultTableModel(){
         @Override
@@ -64,6 +70,12 @@ public class Ordenar extends javax.swing.JPanel {
             }
         }
     };
+    
+    public void IdOrden()
+    {
+        lblId.setText(genera.generaIdOrden());
+        
+    }
     public Ordenar() {
         initComponents();
         lblId.requestFocus();
@@ -72,6 +84,20 @@ public class Ordenar extends javax.swing.JPanel {
         tablaLlena();
         listaorden.clear();
         tablaLlenaOrden();
+        IdOrden();
+    }
+    
+    public void importe()
+    {
+        float total = 0;
+        if(listaorden.size()>0)
+        {
+            for(Orden aux : listaorden)
+            {
+                total += aux.getPrecio();
+            }
+        }
+        txtTotal.setText(String.valueOf(total));
     }
     
     public void estilos()
@@ -137,7 +163,9 @@ public class Ordenar extends javax.swing.JPanel {
         {
             modelo2.addRow(new Object[]{String.valueOf(aux.getCantidad()), aux.getIdPlatillo(), aux.getNombrePlatillo(), String.valueOf(aux.getPrecio())});
         }
+        importe();
         tblOrden.setModel(modelo2);
+        getCambio();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -237,6 +265,17 @@ public class Ordenar extends javax.swing.JPanel {
         txtTotal.setPlaceholder("");
 
         txtRecibido.setPlaceholder("");
+        txtRecibido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtRecibidoKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtRecibidoKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtRecibidoKeyTyped(evt);
+            }
+        });
 
         txtCambio.setPlaceholder("");
 
@@ -293,10 +332,20 @@ public class Ordenar extends javax.swing.JPanel {
         btnLimpiar.setBackground(new java.awt.Color(181, 8, 37));
         btnLimpiar.setForeground(new java.awt.Color(255, 255, 255));
         btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
 
         btnAcepta.setBackground(new java.awt.Color(181, 8, 37));
         btnAcepta.setForeground(new java.awt.Color(255, 255, 255));
         btnAcepta.setText("Aceptar");
+        btnAcepta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptaActionPerformed(evt);
+            }
+        });
 
         btnQuit.setBackground(new java.awt.Color(51, 51, 51));
         btnQuit.setForeground(new java.awt.Color(255, 255, 255));
@@ -432,7 +481,9 @@ public class Ordenar extends javax.swing.JPanel {
                 if(validarEnOrden(plato)==false)
                 {
                     listaorden.add(new Orden(1,plato.getIdPlatillo(),plato.getNombrePlatillo(),plato.getPrecio()));
+                    txtTotal.setText(String.valueOf(plato.getPrecio()));
                     tablaLlenaOrden();
+                    
                 }
                 else
                 {
@@ -441,7 +492,7 @@ public class Ordenar extends javax.swing.JPanel {
                     orden.setPrecio(Float.parseFloat(tblMenu.getValueAt(tblMenu.getSelectedRow(), 2).toString())*orden.getCantidad());
                     listaorden.set(i, orden);
                     tablaLlenaOrden();
-                }
+                }               
             }
         }
     }//GEN-LAST:event_tblMenuMousePressed
@@ -567,6 +618,122 @@ public class Ordenar extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_tblOrdenMousePressed
 
+    private void txtRecibidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRecibidoKeyTyped
+        char caracter = evt.getKeyChar();
+        
+       if(Character.isLetter(caracter) || caracter == KeyEvent.VK_SPACE || txtRecibido.getText().length() == 8 || caracter==',' || (caracter == '.' && txtRecibido.getText().length()==0))
+        {
+            getToolkit().beep();
+            evt.consume();
+        }
+        else 
+       {
+            if(txtRecibido.getText().contains(".") && caracter == '.')
+            {
+                evt.consume();
+            }
+       }
+    }//GEN-LAST:event_txtRecibidoKeyTyped
+
+    
+    private void txtRecibidoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRecibidoKeyReleased
+
+        getCambio();
+    }//GEN-LAST:event_txtRecibidoKeyReleased
+
+    public void getCambio()
+    {
+        if(txtRecibido.getText().isEmpty())
+        {
+            txtCambio.setPlaceholder("Sin pago recibido");
+        }
+        else
+        {
+            txtCambio.setPlaceholder("");
+            if(Float.parseFloat(txtRecibido.getText())<Float.parseFloat(txtTotal.getText()))
+            {
+                txtCambio.setPlaceholder("No cubre pago");
+            }
+            else
+            {
+                txtCambio.setText(String.valueOf(Float.parseFloat(txtRecibido.getText())-Float.parseFloat(txtTotal.getText())));
+            }
+        }
+    }
+    
+    private void txtRecibidoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRecibidoKeyPressed
+        
+    }//GEN-LAST:event_txtRecibidoKeyPressed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+        limpia();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void btnAceptaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptaActionPerformed
+        
+        Window parentWindow = SwingUtilities.windowForComponent(this);
+        Frame parentframe = null;
+        if(parentWindow instanceof Frame)
+        {
+            parentframe = (Frame)parentWindow;
+        }
+        
+        if(txtCliente.getText().isEmpty())
+        {
+            unboton = new UnBoton(parentframe, true, 10);
+            unboton.setVisible(true);
+        }
+        else if(listaorden.size()==0)
+        {
+            unboton = new UnBoton(parentframe, true,11);
+            unboton.setVisible(true);
+        }
+        else if(txtRecibido.getText().isEmpty())
+        {
+            unboton = new UnBoton(parentframe, true,12);
+            unboton.setVisible(true);
+        }
+        else if(Float.parseFloat(txtTotal.getText())>Float.parseFloat(txtRecibido.getText()))
+        {
+            unboton = new UnBoton(parentframe, true,13);
+            unboton.setVisible(true);
+        }
+        else
+        {
+            String fecha = String.valueOf(calendar.get(Calendar.YEAR))+"/"+String.valueOf(calendar.get(Calendar.MONTH)+1)+"/"+String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+            ordenGuardar = new Orden(lblId.getText(),txtCliente.getText(),fecha,"En cola",pasaString(),Float.parseFloat(txtTotal.getText()));
+            mysql.conectar();
+            mysql.insertaOrden(ordenGuardar);
+            mysql.desconectar();
+            limpia();
+            IdOrden();
+        }
+        
+    }//GEN-LAST:event_btnAceptaActionPerformed
+
+    private String pasaString ()
+    {
+        String productos = "";
+        for(Orden aux : listaorden)
+        {
+            productos += aux.getCantidad()+" "+aux.getIdPlatillo()+" "+aux.getNombrePlatillo()+",";
+        }
+        return productos;
+    }
+    
+    public void limpia()
+    {
+        listaorden.clear();
+        tablaLlenaOrden();
+        tablaLlena();
+        txtRecibido.setText("");
+        txtCambio.setText("");
+        txtsearch.setText("");
+        txtCliente.setText("");
+        v="0";
+    }
+    
     private float buscarPrecio()
     {
         for(Platillo aux : listaplatillos)

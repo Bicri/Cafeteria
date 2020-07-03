@@ -25,6 +25,7 @@ public class InicioCajero extends javax.swing.JFrame {
     
     private Fuentes fuente;
     private DatosPersonales personal;
+    private Estados estados;
     private String empleado;
     private Login login = new Login();
     private Mysql mysql = new Mysql();
@@ -44,6 +45,9 @@ public class InicioCajero extends javax.swing.JFrame {
         
         personal = new DatosPersonales(empleado);
         personal.setVisible(false);
+        
+        estados = new Estados();
+        estados.setVisible(false);
         
         ordena = new Ordenar();
         ordena.setVisible(true);
@@ -257,6 +261,7 @@ public class InicioCajero extends javax.swing.JFrame {
         lblCerrar.setForeground(new Color(137,137,137));
         
         personal.setVisible(false);
+        estados.setVisible(false);
         
         ordena = new Ordenar();
         ordena.setVisible(true);
@@ -274,6 +279,14 @@ public class InicioCajero extends javax.swing.JFrame {
         lblEstatus.setForeground(new Color(131,8,37));
         lblCerrar.setForeground(new Color(137,137,137));
         
+        ordena.setVisible(false);
+        personal.setVisible(false);
+        
+        estados = new Estados();
+        estados.setVisible(true);
+        
+        centro.add(estados);
+        centro.validate();
         
         
     }//GEN-LAST:event_lblEstatusMouseClicked
@@ -286,6 +299,7 @@ public class InicioCajero extends javax.swing.JFrame {
         lblCerrar.setForeground(new Color(137,137,137));
 
         ordena.setVisible(false);
+        estados.setVisible(false);
        
         personal = new DatosPersonales(empleado);
         personal.setVisible(true);
@@ -304,7 +318,7 @@ public class InicioCajero extends javax.swing.JFrame {
         
         ordena.setVisible(false);
         personal.setVisible(false);
-        
+        estados.setVisible(false);
         login.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_lblCerrarMouseClicked

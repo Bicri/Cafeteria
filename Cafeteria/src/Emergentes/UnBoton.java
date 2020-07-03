@@ -25,6 +25,13 @@ public class UnBoton extends javax.swing.JDialog {
         6 = sin texto en agregar plato orden
         7 = ingresa cero en add orden
         8 = error seleccionar para quita plato
+        9 = Cantidad mayor a la establcida
+        10 = Error, falta nombre 
+        11 = error, no selecciono nada en orden
+        12 = sin pago efectuado
+        13 = pago insuficiente
+        14 = error de seleccion
+        15 = error cambio en cola a terminada
     */
     
     Fuentes tipograf = new Fuentes();
@@ -88,6 +95,36 @@ public class UnBoton extends javax.swing.JDialog {
         {
             lbltitulo.setText("Error");
             lblMensaje.setText("La cantidad a quitar es mayor a la establecida");
+        }
+        else if(flag == 10)
+        {
+            lbltitulo.setText("Error de cliente");
+            lblMensaje.setText("Inserte nombre del cliente");
+        }
+        else if(flag == 11)
+        {
+            lbltitulo.setText("Error de compra");
+            lblMensaje.setText("Seleccione los productos a comprar");
+        }
+        else if(flag == 12)
+        {
+            lbltitulo.setText("Error de pago");
+            lblMensaje.setText("Ningun pago efectuado");
+        }
+        else if(flag == 13)
+        {
+            lbltitulo.setText("Error de pago");
+            lblMensaje.setText("El pago no cubre el importe total");
+        }
+        else if(flag == 14)
+        {
+            lbltitulo.setText("Error de orden");
+            lblMensaje.setText("Seleccione una orden para editar");
+        }
+        else if(flag == 15)
+        {
+            lbltitulo.setText("Error de estado");
+            lblMensaje.setText("No se puede cambiar el estado En cola a Terminado");
         }
     }
 

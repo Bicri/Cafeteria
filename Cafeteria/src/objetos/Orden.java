@@ -16,12 +16,18 @@ public class Orden extends Platillo{
         super();
     }
 
+    public Orden(String idOrden, String cliente, String estado) {
+        this.idOrden = idOrden;
+        this.cliente = cliente;
+        this.estado = estado;
+    }
+
     public Orden(int cantidad, String IdPlatillo, String NombrePlatillo, float precio) {
         super(IdPlatillo, NombrePlatillo, precio);
         this.cantidad = cantidad;
     }
 
-    public Orden(String idOrden, String cliente, String fecha, String estado, String platillos, float total, int cantidad) {
+    public Orden(String idOrden, String cliente, String fecha, String estado, String platillos, float total) {
         this.idOrden = idOrden;
         this.cliente = cliente;
         this.fecha = fecha;
@@ -90,7 +96,7 @@ public class Orden extends Platillo{
 
     @Override
     public String toString() {
-        return "Orden{" + "idOrden=" + idOrden + ", cliente=" + cliente + ", fecha=" + fecha + ", estado=" + estado + ", platillos=" + platillos + ", total=" + total + '}';
+        return "Orden{" + "idOrden=" + idOrden + ", cliente=" + cliente + ", fecha=" + fecha + ", estado=" + estado + ", platillos=" + platillos + " total=" + total + '}';
     }
 
  

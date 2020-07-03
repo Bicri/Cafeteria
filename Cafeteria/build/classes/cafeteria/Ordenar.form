@@ -282,6 +282,11 @@
       <Properties>
         <Property name="placeholder" type="java.lang.String" value=""/>
       </Properties>
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtRecibidoKeyPressed"/>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtRecibidoKeyReleased"/>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtRecibidoKeyTyped"/>
+      </Events>
     </Component>
     <Component class="rscomponentshade.RSTextFieldShade" name="txtCambio">
       <Properties>
@@ -385,6 +390,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Limpiar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLimpiarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnAcepta">
       <Properties>
@@ -396,6 +404,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Aceptar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAceptaActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnQuit">
       <Properties>

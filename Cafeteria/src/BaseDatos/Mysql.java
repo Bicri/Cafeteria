@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import objetos.Empleado;
+import objetos.Orden;
 import objetos.Platillo;
 
 /**
@@ -30,8 +31,10 @@ public class Mysql {
     
     private Empleado empleado = new Empleado();
     private Platillo platillo = new Platillo();
+    private Orden orden = new Orden();
     private List <Platillo> listaplatilos = new ArrayList<>();
     private List <Empleado> listaEmpleado = new ArrayList<>();
+    private List <Orden> listaOrdenes = new ArrayList<>();
     
     
         public boolean conectar() 
@@ -54,6 +57,29 @@ public class Mysql {
             {
                 System.out.println("ERROR AL DESCONECTAR "+ex);
             }
+        }
+        
+        public Orden getFirstOrden(String estado)
+        {
+            
+            try{
+                st = con.prepareStatement("select * from ordenes where Estado = '"+estado+"' order by IdOrden ASC Limit 1");
+                result = st.executeQuery();
+                while(result.next())
+                {
+                    orden.setIdOrden(result.getString(1));
+                    orden.setCliente(result.getString(2));
+                    orden.setPlatillos(result.getString(3));
+                    orden.setTotal(result.getFloat(4));
+                    orden.setFecha(result.getString(5));
+                    orden.setEstado(result.getString(6));        
+                }
+                
+            }catch(SQLException e)
+            {
+                System.out.println("Error al mostrar" + e);
+            }
+            return orden;
         }
         
         public boolean iniciar_sesion(String user, String pass)
@@ -139,6 +165,23 @@ public class Mysql {
                 System.out.println("Error al mostrar" + e);
             }
             return listaEmpleado;
+        }
+        
+        public List listStatusOrdenes(String condicion)
+        {
+            listaOrdenes.clear();
+            try{
+                st = con.prepareStatement("select * from ordenes WHERE Estado = '"+condicion+"'");
+                result = st.executeQuery();
+                while(result.next())
+                {
+                    listaOrdenes.add(new Orden(result.getString(1), result.getString(2),result.getString(6)));
+                }
+            }catch(SQLException e)
+            {
+                System.out.println("Error al mostrar" + e);
+            }
+            return listaOrdenes;
         }
         
         public List muestraPlatillos()
@@ -237,6 +280,24 @@ public class Mysql {
             return i;
         }
         
+        public int countOrdenes()
+        {
+            int i = 0;
+            try{
+                st = con.prepareStatement("SELECT * FROM ordenes ");
+                result = st.executeQuery();
+                while(result.next())
+                {
+                    i++;
+                }
+                
+            }catch(SQLException e)
+            {
+                System.out.println("Error al mostrar" + e);
+            }
+            return i;
+        }
+        
         public Platillo lastPlato()
         {
             
@@ -255,6 +316,24 @@ public class Mysql {
                 System.out.println("Error al mostrar" + e);
             }
             return platillo;
+        }
+        
+        public String lastOrden()
+        {
+            
+            try{
+                st = con.prepareStatement("SELECT * FROM ordenes ORDER BY IdOrden DESC LIMIT 1");
+                result = st.executeQuery();
+                while(result.next())
+                {
+                    return result.getString(1);  
+                }
+                
+            }catch(SQLException e)
+            {
+                System.out.println("Error al mostrar" + e);
+            }
+            return "OR0";
         }
         
         public boolean lastEmp2(String inicial)
@@ -402,5 +481,40 @@ public class Mysql {
             return false;   
         }
         
+        
+        public boolean insertaOrden(Orden or)
+        {
+            try
+            {
+                st = con.prepareStatement("INSERT INTO ordenes VALUES (?,?,?,?,?,?)");
+                st.setString(1, or.getIdOrden());
+                st.setString(2, or.getCliente());
+                st.setString(3, or.getPlatillos());
+                st.setFloat(4, or.getTotal());
+                st.setString(5, or.getFecha());
+                st.setString(6, or.getEstado());
+                return st.execute();
+            }catch(SQLException e)
+            {
+                
+                System.out.println("Error al insertar\n "+ e);
+            }
+            
+            return false;
+        }
+        
+        public boolean ActualizaOrden(String id, String status)
+        {
+            try
+            {
+                st = con.prepareStatement("UPDATE ordenes SET Estado = '"+status+"' WHERE IdOrden = '"+id+"'");
+                st.executeUpdate();
+                return true;
+            }catch(SQLException e)
+            {
+                System.out.println("Error "+e);
+            }
+            return false;
+        }
     
 }
