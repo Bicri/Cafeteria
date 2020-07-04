@@ -9,7 +9,7 @@ create table empleados
     PrimerApellido varchar(15),
     SegundoApellido varchar(15),
     Sexo varchar (10),
-    Telefono int,
+    Telefono varchar(10),
     Correo varchar(50),
     Cargo varchar(15),
     Contraseña varchar(15)
@@ -44,7 +44,7 @@ create table ordenes
 INSERT INTO empleados (NumeroEmpleado, Nombre, Cargo, Contraseña)Values("A0","root","Administrador","r3c0p3r1");
 
 INSERT INTO empleados (NumeroEmpleado, Nombre, PrimerApellido, SegundoApellido, Sexo, Telefono, Correo, Cargo, Contraseña)
-Values("A1","Isaac Bicri","Ortiz","Martinez","Masculino",53824520,"isaac.bicri@gmail.com","Administrador","b1cr1");
+Values("A1","Isaac Bicri","Ortiz","Martinez","Masculino","53824520","isaac.bicri@gmail.com","Administrador","b1cr1");
 
 INSERT INTO menu VALUES("P1","Hot cakes",15);
 INSERT INTO menu VALUES("P2","Dona glaseada",7.50);

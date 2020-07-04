@@ -113,24 +113,16 @@ public class Mysql {
             conectar();
             try
             {
-                st = con.prepareStatement("select * from empleados where NumeroEmpleado = '"+user+"'");
+                st = con.prepareStatement("select * from empleados where NumeroEmpleado = '"+user+"' AND Contraseña = '"+pass+"' ");
                 result = st.executeQuery();
                 
-                if(result.next() != false)
-                {
-                    st = con.prepareStatement("select * from empleados where Contraseña = '"+pass+"'");
-                    result = st.executeQuery();
-                    return result.next();
-                }
-                else
-                {
-                    return false;
-                }
+                return result.next();
             }catch(SQLException e)
             {
                 System.out.println("Error de existencia "+e);
                 return false;
             }
+            
         }
         
         public boolean valida1_usuario(String user)
