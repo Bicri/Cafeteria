@@ -8,7 +8,7 @@ package objetos;
 public class Empleado extends Persona{
     
     private String numeroEmpleado;
-    private int telefono;
+    private String telefono;
     private String correo, cargo, contraseña;
 
     public Empleado()
@@ -16,7 +16,7 @@ public class Empleado extends Persona{
         super();
     }
 
-    public Empleado(String numeroEmpleado, int telefono, String correo, String cargo, String contraseña, String nombre, String primerApellido, String segundoApellido, String sexo) {
+    public Empleado(String numeroEmpleado, String telefono, String correo, String cargo, String contraseña, String nombre, String primerApellido, String segundoApellido, String sexo) {
         super(nombre, primerApellido, segundoApellido, sexo);
         this.numeroEmpleado = numeroEmpleado;
         this.telefono = telefono;
@@ -33,11 +33,11 @@ public class Empleado extends Persona{
         this.numeroEmpleado = numeroEmpleado;
     }
 
-    public int getTelefono() {
+    public String getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 

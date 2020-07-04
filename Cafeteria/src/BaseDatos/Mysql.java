@@ -113,19 +113,10 @@ public class Mysql {
             conectar();
             try
             {
-                st = con.prepareStatement("select * from empleados where NumeroEmpleado = '"+user+"'");
+                st = con.prepareStatement("select * from empleados where NumeroEmpleado = '"+user+"' AND Contraseña = '"+pass+"'");
                 result = st.executeQuery();
                 
-                if(result.next() != false)
-                {
-                    st = con.prepareStatement("select * from empleados where Contraseña = '"+pass+"'");
-                    result = st.executeQuery();
-                    return result.next();
-                }
-                else
-                {
-                    return false;
-                }
+                return result.next();
             }catch(SQLException e)
             {
                 System.out.println("Error de existencia "+e);
@@ -162,7 +153,7 @@ public class Mysql {
                     empleado.setPrimerApellido(result.getString(3));
                     empleado.setSegundoApellido(result.getString(4));
                     empleado.setSexo(result.getString(5));
-                    empleado.setTelefono(result.getInt(6));
+                    empleado.setTelefono(result.getString(6));
                     empleado.setCorreo(result.getString(7));
                     empleado.setCargo(result.getString(8));
                     empleado.setContraseña(result.getString(9));
@@ -184,7 +175,7 @@ public class Mysql {
                 result = st.executeQuery();
                 while(result.next())
                 {
-                    listaEmpleado.add(new Empleado(result.getString(1), result.getInt(6), result.getString(7),result.getString(8),result.getString(9), result.getString(2), result.getString(3), result.getString(4),result.getString(5)));
+                    listaEmpleado.add(new Empleado(result.getString(1), result.getString(6), result.getString(7),result.getString(8),result.getString(9), result.getString(2), result.getString(3), result.getString(4),result.getString(5)));
                 }
             }catch(SQLException e)
             {
@@ -252,7 +243,7 @@ public class Mysql {
                 result = st.executeQuery();
                 while(result.next())
                 {
-                    listaEmpleado.add(new Empleado(result.getString(1), result.getInt(6), result.getString(7),result.getString(8),result.getString(9), result.getString(2), result.getString(3), result.getString(4),result.getString(5)));
+                    listaEmpleado.add(new Empleado(result.getString(1), result.getString(6), result.getString(7),result.getString(8),result.getString(9), result.getString(2), result.getString(3), result.getString(4),result.getString(5)));
                 }
             }catch(SQLException e)
             {
@@ -274,7 +265,7 @@ public class Mysql {
                     empleado.setPrimerApellido(result.getString(3));
                     empleado.setSegundoApellido(result.getString(4));
                     empleado.setSexo(result.getString(5));
-                    empleado.setTelefono(result.getInt(6));
+                    empleado.setTelefono(result.getString(6));
                     empleado.setCorreo(result.getString(7));
                     empleado.setCargo(result.getString(8));
                     empleado.setContraseña(result.getString(9));
@@ -387,7 +378,7 @@ public class Mysql {
                 st.setString(3, emp.getPrimerApellido());
                 st.setString(4, emp.getSegundoApellido());
                 st.setString(5, emp.getSexo());
-                st.setInt(6, emp.getTelefono());
+                st.setString(6, emp.getTelefono());
                 st.setString(7, emp.getCorreo());
                 st.setString(8, emp.getCargo());
                 st.setString(9, emp.getContraseña());

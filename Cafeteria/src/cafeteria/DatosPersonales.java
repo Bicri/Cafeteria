@@ -152,7 +152,7 @@ public class DatosPersonales extends javax.swing.JPanel {
             empleado2.setSegundoApellido(txtSecond.getText());
             empleado2.setCargo(lblCargo2.getText());
             empleado2.setCorreo(txtCorreo.getText());
-            empleado2.setTelefono(Integer.parseInt(txtFon.getText()));
+            empleado2.setTelefono(txtFon.getText());
             empleado2.setSexo((String)cmbSexo.getSelectedItem());
 
             if(txtPass.getText().equals(genPass))
