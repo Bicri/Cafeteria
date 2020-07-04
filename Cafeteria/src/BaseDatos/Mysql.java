@@ -113,11 +113,8 @@ public class Mysql {
             conectar();
             try
             {
-<<<<<<< HEAD
-                st = con.prepareStatement("select * from empleados where NumeroEmpleado = '"+user+"' AND Contraseña = '"+pass+"' ");
-=======
                 st = con.prepareStatement("select * from empleados where NumeroEmpleado = '"+user+"' AND Contraseña = '"+pass+"'");
->>>>>>> bicri
+
                 result = st.executeQuery();
                 
                 return result.next();
