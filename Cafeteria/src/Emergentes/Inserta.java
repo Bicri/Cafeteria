@@ -391,7 +391,7 @@ public class Inserta extends javax.swing.JDialog {
                 //Validacion de correo
                 if(valCorreo())
                 {
-                    emp = new Empleado(lblId2.getText(),Integer.parseInt(txtTelefono.getText()),txtCorreo.getText(),String.valueOf(cmbCargo.getSelectedItem()),txtPass.getText(), txtNombre.getText(),txtFirst.getText(),txtSecond.getText(),String.valueOf(cmbSexo.getSelectedItem()));
+                    emp = new Empleado(lblId2.getText(),txtTelefono.getText(),txtCorreo.getText(),String.valueOf(cmbCargo.getSelectedItem()),txtPass.getText(), txtNombre.getText(),txtFirst.getText(),txtSecond.getText(),String.valueOf(cmbSexo.getSelectedItem()));
                     mysql.conectar();
                     mysql.insertaEmpleado(emp);
                     mysql.desconectar();
